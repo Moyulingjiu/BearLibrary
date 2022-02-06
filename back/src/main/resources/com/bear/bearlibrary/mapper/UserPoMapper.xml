@@ -25,6 +25,10 @@
     <result column="art" jdbcType="BIGINT" property="art" />
     <result column="practice" jdbcType="BIGINT" property="practice" />
     <result column="valid" jdbcType="INTEGER" property="valid" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="create_id" jdbcType="BIGINT" property="createId" />
+    <result column="modified_id" jdbcType="BIGINT" property="modifiedId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -99,7 +103,8 @@
     -->
     `id`, `name`, `password`, `invitation_code_id`, `nickname`, `realname`, `avatar`, 
     `birthday`, `gender`, `phone`, `honor_point`, `self_control_point`, `contribution_point`, 
-    `walk`, `read`, `sport`, `art`, `practice`, `valid`
+    `walk`, `read`, `sport`, `art`, `practice`, `valid`, `gmt_create`, `gmt_modified`, 
+    `create_id`, `modified_id`
   </sql>
   <select id="selectByExample" parameterType="com.bear.bearlibrary.model.po.UserPoExample" resultMap="BaseResultMap">
     <!--
@@ -151,13 +156,17 @@
       `birthday`, `gender`, `phone`, 
       `honor_point`, `self_control_point`, `contribution_point`, 
       `walk`, `read`, `sport`, `art`, 
-      `practice`, `valid`)
+      `practice`, `valid`, `gmt_create`, 
+      `gmt_modified`, `create_id`, `modified_id`
+      )
     values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{invitationCodeId,jdbcType=BIGINT}, 
       #{nickname,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
       #{birthday,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, 
       #{honorPoint,jdbcType=BIGINT}, #{selfControlPoint,jdbcType=BIGINT}, #{contributionPoint,jdbcType=BIGINT}, 
       #{walk,jdbcType=BIGINT}, #{read,jdbcType=BIGINT}, #{sport,jdbcType=BIGINT}, #{art,jdbcType=BIGINT}, 
-      #{practice,jdbcType=BIGINT}, #{valid,jdbcType=INTEGER})
+      #{practice,jdbcType=BIGINT}, #{valid,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{createId,jdbcType=BIGINT}, #{modifiedId,jdbcType=BIGINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.bear.bearlibrary.model.po.UserPo">
     <!--
@@ -223,6 +232,18 @@
       <if test="valid != null">
         `valid`,
       </if>
+      <if test="gmtCreate != null">
+        `gmt_create`,
+      </if>
+      <if test="gmtModified != null">
+        `gmt_modified`,
+      </if>
+      <if test="createId != null">
+        `create_id`,
+      </if>
+      <if test="modifiedId != null">
+        `modified_id`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="name != null">
@@ -278,6 +299,18 @@
       </if>
       <if test="valid != null">
         #{valid,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=BIGINT},
+      </if>
+      <if test="modifiedId != null">
+        #{modifiedId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -345,6 +378,18 @@
       <if test="record.valid != null">
         `valid` = #{record.valid,jdbcType=INTEGER},
       </if>
+      <if test="record.gmtCreate != null">
+        `gmt_create` = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        `gmt_modified` = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createId != null">
+        `create_id` = #{record.createId,jdbcType=BIGINT},
+      </if>
+      <if test="record.modifiedId != null">
+        `modified_id` = #{record.modifiedId,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -374,7 +419,11 @@
       `sport` = #{record.sport,jdbcType=BIGINT},
       `art` = #{record.art,jdbcType=BIGINT},
       `practice` = #{record.practice,jdbcType=BIGINT},
-      `valid` = #{record.valid,jdbcType=INTEGER}
+      `valid` = #{record.valid,jdbcType=INTEGER},
+      `gmt_create` = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      `gmt_modified` = #{record.gmtModified,jdbcType=TIMESTAMP},
+      `create_id` = #{record.createId,jdbcType=BIGINT},
+      `modified_id` = #{record.modifiedId,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -440,6 +489,18 @@
       <if test="valid != null">
         `valid` = #{valid,jdbcType=INTEGER},
       </if>
+      <if test="gmtCreate != null">
+        `gmt_create` = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        `gmt_modified` = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null">
+        `create_id` = #{createId,jdbcType=BIGINT},
+      </if>
+      <if test="modifiedId != null">
+        `modified_id` = #{modifiedId,jdbcType=BIGINT},
+      </if>
     </set>
     where `id` = #{id,jdbcType=BIGINT}
   </update>
@@ -466,7 +527,11 @@
       `sport` = #{sport,jdbcType=BIGINT},
       `art` = #{art,jdbcType=BIGINT},
       `practice` = #{practice,jdbcType=BIGINT},
-      `valid` = #{valid,jdbcType=INTEGER}
+      `valid` = #{valid,jdbcType=INTEGER},
+      `gmt_create` = #{gmtCreate,jdbcType=TIMESTAMP},
+      `gmt_modified` = #{gmtModified,jdbcType=TIMESTAMP},
+      `create_id` = #{createId,jdbcType=BIGINT},
+      `modified_id` = #{modifiedId,jdbcType=BIGINT}
     where `id` = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
