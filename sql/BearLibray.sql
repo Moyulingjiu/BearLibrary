@@ -25,6 +25,10 @@ CREATE TABLE `administrator` (
   `name` varchar(50) NOT NULL,
   `password` varchar(500) NOT NULL,
   `valid` int NOT NULL DEFAULT '1',
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL,
+  `create_id` bigint DEFAULT NULL,
+  `modified_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -43,6 +47,10 @@ CREATE TABLE `check` (
   `point` bigint DEFAULT NULL,
   `exp` bigint DEFAULT NULL,
   `comment` varchar(200) DEFAULT NULL,
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL,
+  `create_id` bigint DEFAULT NULL,
+  `modified_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -58,6 +66,10 @@ CREATE TABLE `contribution` (
   `user_id` bigint DEFAULT NULL,
   `point` bigint DEFAULT NULL,
   `comment` varchar(500) DEFAULT NULL,
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL,
+  `create_id` bigint DEFAULT NULL,
+  `modified_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -73,6 +85,10 @@ CREATE TABLE `invitation_code` (
   `user_id` bigint DEFAULT NULL,
   `code` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `valid_time` datetime DEFAULT NULL,
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL,
+  `create_id` bigint DEFAULT NULL,
+  `modified_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -88,6 +104,10 @@ CREATE TABLE `message` (
   `text` varchar(200) DEFAULT NULL,
   `link` varchar(200) DEFAULT NULL,
   `read` int DEFAULT '0' COMMENT '是否已读',
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL,
+  `create_id` bigint DEFAULT NULL,
+  `modified_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -101,6 +121,10 @@ CREATE TABLE `picture` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` bigint DEFAULT NULL,
   `url` varchar(200) DEFAULT NULL,
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL,
+  `create_id` bigint DEFAULT NULL,
+  `modified_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -130,6 +154,10 @@ CREATE TABLE `user` (
   `art` bigint DEFAULT NULL,
   `practice` bigint DEFAULT NULL,
   `valid` int DEFAULT '1',
+  `gmt_create` datetime DEFAULT NULL,
+  `gmt_modified` datetime DEFAULT NULL,
+  `create_id` bigint DEFAULT NULL,
+  `modified_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 

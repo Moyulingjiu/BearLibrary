@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * 用户实体类
  *
@@ -22,4 +24,18 @@ public class User {
     private String avatar;
     private String birthday;
     private Gender gender;
+    private String phone;
+    private Long honorPoint;
+    private Long selfControlPoint;
+    private Long contributionPoint;
+    private Long walk;
+    private Long read;
+    private Long sport;
+    private Long art;
+    private Long practice;
+    private Integer valid;
+    private LocalDateTime gmtCreate;
+    private Long createId;
+    private LocalDateTime gmtModified;
+    private Long modifiedId;
 }
