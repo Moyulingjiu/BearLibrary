@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 用户controller
+ *
+ * @author 墨羽翎玖
+ */
 @Api(tags = "登陆模拟")
 @RestController
 @CrossOrigin
