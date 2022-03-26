@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * 日志注入
  *
  * @author moyulingjiu
- * create 2022年3月26日21:34:10
+ * create 2022年3月26日
  */
 @Aspect
 @Component

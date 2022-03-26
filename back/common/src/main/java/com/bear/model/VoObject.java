@@ -4,7 +4,7 @@ package com.bear.model;
  * Vo对象的抽象接口
  *
  * @author moyulingjiu
- * create 2022年3月26日21:43:24
+ * create 2022年3月26日
  */
 public interface VoObject {
     /**

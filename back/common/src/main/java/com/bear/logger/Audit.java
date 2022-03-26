@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * 日志
  *
  * @author moyulingjiu
- * create 2022年3月26日21:31:40
+ * create 2022年3月26日
  */
 @Target({ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
