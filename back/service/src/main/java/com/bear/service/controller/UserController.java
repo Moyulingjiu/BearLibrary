@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * 用户controller层
  *
@@ -28,7 +30,7 @@ public class UserController {
 
     @PostMapping("/register")
     public Object register(
-            @RequestBody UserRegisterVo registerVo
+            @Valid @RequestBody UserRegisterVo registerVo
     ) {
         return userService.register(registerVo);
     }

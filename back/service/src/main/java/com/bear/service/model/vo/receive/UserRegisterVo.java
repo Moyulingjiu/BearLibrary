@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 注册的用户vo
  *
@@ -14,8 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegisterVo {
-    @NotNull
+    @NotBlank
     private String code;
+    @NotBlank
     private String name;
+    @NotBlank
     private String password;
 }

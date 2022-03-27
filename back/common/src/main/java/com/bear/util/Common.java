@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 
 /**
@@ -26,6 +27,15 @@ public class Common {
      * SimplePerson的id字段
      */
     private static final String ID_FIELD_SUFFIX = "Id";
+    /**
+     * 修改人的字段
+     */
+    private static final String MODIFIED = "modified";
+    /**
+     * 修改时间的字段
+     */
+    private static final String GMT_MODIFIED = "gmtModified";
+
 
     /**
      * 克隆Object
@@ -156,5 +166,56 @@ public class Common {
         }
 
         return ret;
+    }
+
+    /**
+     * 更改类的修改时间
+     *
+     * @param origin 对象object
+     * @param id     修改人id
+     * @param name   修改人name
+     * @param <T>    Object的类型
+     */
+    public static <T> void modifyObject(T origin, Long id, String name) {
+        Class<?> aClass = origin.getClass();
+        // 修改修改人
+        try {
+            Field modified = aClass.getDeclaredField(MODIFIED);
+            modified.setAccessible(true);
+            if (modified.getType() == SimplePerson.class) {
+                SimplePerson person = null;
+                try {
+                    person = (SimplePerson) modified.get(origin);
+                } catch (IllegalAccessException e) {
+                    logger.error(e.toString());
+                }
+                if (person == null) {
+                    person = new SimplePerson();
+                    try {
+                        modified.set(origin, person);
+                    } catch (IllegalAccessException e) {
+                        logger.error(e.toString());
+                    }
+                }
+                person.setName(name);
+                person.setId(id);
+            }
+        } catch (NoSuchFieldException e) {
+            logger.error(e.toString());
+        }
+        // 修改修改的时间
+        try {
+            Field gmtModified = aClass.getDeclaredField(GMT_MODIFIED);
+            gmtModified.setAccessible(true);
+            if (gmtModified.getType() == LocalDateTime.class) {
+                try {
+                    gmtModified.set(origin, LocalDateTime.now());
+                } catch (IllegalAccessException e) {
+                    logger.error(e.toString());
+                }
+            }
+        } catch (NoSuchFieldException e) {
+            logger.error(e.toString());
+        }
     }
 }

@@ -27,6 +27,7 @@ public class UserDao {
     }
 
     public boolean existName(String name) {
+        // todo: 名字被查询过一次就需要放入redis
         UserPoExample example = new UserPoExample();
         UserPoExample.Criteria criteria = example.createCriteria();
         criteria.andNameEqualTo(name);
@@ -50,5 +51,10 @@ public class UserDao {
     public int updateById(User user) {
         UserPo userPo = Common.cloneObject(user, UserPo.class);
         int i = userPoMapper.updateByPrimaryKey(userPo);
+    }
+
+    public int insert(User user) {
+        UserPo userPo = Common.cloneObject(user, UserPo.class);
+        return userPoMapper.insert(userPo);
     }
 }
