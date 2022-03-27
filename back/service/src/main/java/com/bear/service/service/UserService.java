@@ -1,5 +1,13 @@
 package com.bear.service.service;
 
+import com.bear.service.dao.InvitationCodeDao;
+import com.bear.service.dao.UserDao;
+import com.bear.service.model.bo.InvitationCode;
+import com.bear.service.model.bo.User;
+import com.bear.service.model.vo.receive.UserRegisterVo;
+import com.bear.util.ResponseUtil;
+import com.bear.util.ReturnNo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,7 +18,20 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
-    public Object register() {
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private InvitationCodeDao invitationCodeDao;
+
+    public User getByName(String name) {
+        return userDao.selectByName(name);
+    }
+
+    public Object register(UserRegisterVo userRegisterVo) {
+        if (userDao.existName(userRegisterVo.getName())) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.EXIST_USER_NAME);
+        }
+        InvitationCode invitationCode = invitationCodeDao.selectByCode(userRegisterVo.getCode());
         return "";
     }
 }

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegisterVo {
+    @NotNull
     private String code;
     private String name;
     private String password;

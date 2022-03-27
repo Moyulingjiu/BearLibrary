@@ -2,6 +2,8 @@ package com.bear.service.controller;
 
 import com.bear.service.model.vo.receive.UserRegisterVo;
 import com.bear.service.service.UserService;
+import com.bear.util.ResponseUtil;
+import com.bear.util.ReturnNo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,6 @@ public class UserController {
     public Object register(
             @RequestBody UserRegisterVo registerVo
     ) {
-        return userService.register();
+        return userService.register(registerVo);
     }
 }
