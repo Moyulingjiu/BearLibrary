@@ -162,7 +162,7 @@ public class Common {
                 }
             }
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            logger.error(e.toString());
+            logger.debug(e.toString());
         }
 
         return ret;
@@ -187,21 +187,21 @@ public class Common {
                 try {
                     person = (SimplePerson) modified.get(origin);
                 } catch (IllegalAccessException e) {
-                    logger.error(e.toString());
+                    logger.debug(e.toString());
                 }
                 if (person == null) {
                     person = new SimplePerson();
                     try {
                         modified.set(origin, person);
                     } catch (IllegalAccessException e) {
-                        logger.error(e.toString());
+                        logger.debug(e.toString());
                     }
                 }
                 person.setName(name);
                 person.setId(id);
             }
         } catch (NoSuchFieldException e) {
-            logger.error(e.toString());
+            logger.debug(e.toString());
         }
         // 修改修改的时间
         try {
@@ -211,11 +211,33 @@ public class Common {
                 try {
                     gmtModified.set(origin, LocalDateTime.now());
                 } catch (IllegalAccessException e) {
-                    logger.error(e.toString());
+                    logger.debug(e.toString());
                 }
             }
         } catch (NoSuchFieldException e) {
-            logger.error(e.toString());
+            logger.debug(e.toString());
+        }
+        try {
+            Field idField = aClass.getDeclaredField(MODIFIED + ID_FIELD_SUFFIX);
+            Field nameField = aClass.getDeclaredField(MODIFIED + NAME_FIELD_SUFFIX);
+            idField.setAccessible(true);
+            nameField.setAccessible(true);
+            if (idField.getType() == id.getClass()) {
+                try {
+                    idField.set(origin, id);
+                } catch (IllegalAccessException e) {
+                    logger.debug(e.toString());
+                }
+            }
+            if (nameField.getType() == name.getClass()) {
+                try {
+                    nameField.set(origin, name);
+                } catch (IllegalAccessException e) {
+                    logger.debug(e.toString());
+                }
+            }
+        } catch (NoSuchFieldException e) {
+            logger.debug(e.toString());
         }
     }
 }
