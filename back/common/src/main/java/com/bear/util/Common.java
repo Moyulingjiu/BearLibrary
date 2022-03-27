@@ -151,7 +151,6 @@ public class Common {
                     }
                 }
             }
-
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             logger.error(e.toString());
         }
