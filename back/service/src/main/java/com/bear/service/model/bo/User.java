@@ -61,7 +61,7 @@ public class User {
     /**
      * 性别
      */
-    private Gender gender;
+    private Gender gender = Gender.UNKNOWN;
 
     /**
      * 电话
@@ -71,60 +71,65 @@ public class User {
     /**
      * 荣誉值
      */
-    private Long honorPoint;
+    private Long honorPoint = 0L;
 
     /**
      * 自律值
      */
-    private Long selfControlPoint;
+    private Long selfControlPoint = 0L;
 
     /**
      * 贡献值
      */
-    private Long contributionPoint;
+    private Long contributionPoint = 0L;
 
     /**
      * 行走的经验值
      */
-    private Long walk;
+    private Long walk = 0L;
 
     /**
      * 阅读的经验值
      */
-    private Long read;
+    private Long read = 0L;
 
     /**
      * 运动的经验值
      */
-    private Long sport;
+    private Long sport = 0L;
 
     /**
      * 艺术的经验值
      */
-    private Long art;
+    private Long art = 0L;
 
     /**
      * 实践的经验值
      */
-    private Long practice;
+    private Long practice = 0L;
 
     /**
      * 用户是否有效
      */
-    private Integer valid;
+    private Integer valid = 1;
 
     /**
      * 创建时间
      */
-    private LocalDateTime gmtCreate;
-
-    /**
-     * 修改时间
-     */
-    private LocalDateTime gmtModified;
+    private LocalDateTime gmtCreate = LocalDateTime.now();
 
     /**
      * 创建人
      */
     private SimplePerson create;
+
+    /**
+     * 修改时间
+     */
+    private LocalDateTime gmtModified = LocalDateTime.now();
+
+    /**
+     * 修改人
+     */
+    private SimplePerson modified;
 }
