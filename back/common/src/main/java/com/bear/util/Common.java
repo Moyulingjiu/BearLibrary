@@ -7,9 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 /**
  * 工具类
@@ -78,7 +76,7 @@ public class Common {
                         Object[] enumConstants = voField.getType().getEnumConstants();
                         voField.set(ret, enumConstants[(int) newObj]);
                     } else if (enum2IntegerByte) {
-                        Object value = ((Enum) boField.get(bo)).ordinal();
+                        Object value = ((Enum<?>) boField.get(bo)).ordinal();
                         if (voField.getType() == Byte.class) {
                             value = ((Integer) value).byteValue();
                         }

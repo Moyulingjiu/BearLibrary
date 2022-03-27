@@ -12,7 +12,6 @@ MySQL - 8.0.27-0ubuntu0.20.04.1 : Database - bear
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`bear` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `bear`;
 
@@ -21,18 +20,18 @@ USE `bear`;
 DROP TABLE IF EXISTS `administrator`;
 
 CREATE TABLE `administrator` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `password` varchar(500) NOT NULL,
-  `valid` int NOT NULL DEFAULT '1',
-  `gmt_create` datetime DEFAULT NULL,
-  `gmt_modified` datetime DEFAULT NULL,
-  `create_id` bigint DEFAULT NULL,
-  `modified_id` bigint DEFAULT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(500) NOT NULL,
+  `valid` INT NOT NULL DEFAULT '1',
+  `gmt_create` DATETIME DEFAULT NULL,
+  `gmt_modified` DATETIME DEFAULT NULL,
+  `create_id` BIGINT DEFAULT NULL,
+  `create_name` VARCHAR(50) DEFAULT NULL,
+  `modified_id` BIGINT DEFAULT NULL,
+  `modified_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-/*Data for the table `administrator` */
 
 /*Table structure for table `check` */
 
@@ -50,11 +49,11 @@ CREATE TABLE `check` (
   `gmt_create` datetime DEFAULT NULL,
   `gmt_modified` datetime DEFAULT NULL,
   `create_id` bigint DEFAULT NULL,
+  `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
+  `modified_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-/*Data for the table `check` */
 
 /*Table structure for table `contribution` */
 
@@ -69,11 +68,11 @@ CREATE TABLE `contribution` (
   `gmt_create` datetime DEFAULT NULL,
   `gmt_modified` datetime DEFAULT NULL,
   `create_id` bigint DEFAULT NULL,
+  `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
+  `modified_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-/*Data for the table `contribution` */
 
 /*Table structure for table `invitation_code` */
 
@@ -88,11 +87,11 @@ CREATE TABLE `invitation_code` (
   `gmt_create` datetime DEFAULT NULL,
   `gmt_modified` datetime DEFAULT NULL,
   `create_id` bigint DEFAULT NULL,
+  `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
+  `modified_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-/*Data for the table `invitation_code` */
 
 /*Table structure for table `message` */
 
@@ -107,11 +106,11 @@ CREATE TABLE `message` (
   `gmt_create` datetime DEFAULT NULL,
   `gmt_modified` datetime DEFAULT NULL,
   `create_id` bigint DEFAULT NULL,
+  `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
+  `modified_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-/*Data for the table `message` */
 
 /*Table structure for table `picture` */
 
@@ -124,11 +123,11 @@ CREATE TABLE `picture` (
   `gmt_create` datetime DEFAULT NULL,
   `gmt_modified` datetime DEFAULT NULL,
   `create_id` bigint DEFAULT NULL,
+  `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
+  `modified_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-/*Data for the table `picture` */
 
 /*Table structure for table `user` */
 
@@ -157,11 +156,11 @@ CREATE TABLE `user` (
   `gmt_create` datetime DEFAULT NULL,
   `gmt_modified` datetime DEFAULT NULL,
   `create_id` bigint DEFAULT NULL,
+  `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
+  `modified_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
-/*Data for the table `user` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
