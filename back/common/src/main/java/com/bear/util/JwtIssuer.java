@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.bear.model.TokenType;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class JwtIssuer {
      * @param type token类型
      * @return 返回值
      */
-    public static String getToken(Long id, String name, TokenType type) {
+    public static String getToken(@NotNull Long id, @NotNull String name, @NotNull TokenType type) {
         return JWT.create()
                 // 过期时间
                 .withExpiresAt(new Date(System.currentTimeMillis()))

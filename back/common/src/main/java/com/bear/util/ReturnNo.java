@@ -33,7 +33,7 @@ public enum ReturnNo {
     CODE_BE_USED(701, "邀请码已经被使用过了"),
     ILLEGAL_PASSWORD_FORMAT(702, "密码的格式不正确"),
     ILLEGAL_USER_NAME_FORMAT(703, "用户名的格式不正确"),
-    CODE_EXPIRE(704, "邀请码已经过期"),
+    CODE_EXPIRE(704, "邀请码已经过期或不存在"),
 
     /**
      * 登陆的错误

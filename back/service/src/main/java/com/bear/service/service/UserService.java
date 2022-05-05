@@ -5,6 +5,7 @@ import com.bear.service.dao.InvitationCodeDao;
 import com.bear.service.dao.UserDao;
 import com.bear.service.model.bo.InvitationCode;
 import com.bear.service.model.bo.User;
+import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
 import com.bear.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,13 @@ public class UserService {
     @Autowired
     private InvitationCodeDao invitationCodeDao;
 
-    public User getByName(String name) {
+    /**
+     * 通过用户名获取用户
+     *
+     * @param name 用户名
+     * @return 用户（如果不存在返回null）
+     */
+    private User getByName(String name) {
         return userDao.selectByName(name);
     }
 
@@ -46,6 +53,9 @@ public class UserService {
         // todo: 通过redis锁code（避免高并发同时注册遇见问题）
         // 检查邀请码是否被其他人使用了
         InvitationCode invitationCode = invitationCodeDao.selectByCode(userRegisterVo.getCode());
+        if (invitationCode == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.CODE_EXPIRE);
+        }
         if (invitationCode.getUserId() != null) {
             return ResponseUtil.decorateReturnObject(ReturnNo.CODE_BE_USED);
         }
@@ -70,6 +80,23 @@ public class UserService {
         invitationCodeDao.updateById(invitationCode);
 
         // 生成token
-        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED ,JwtIssuer.getToken(user.getId(), user.getName(), TokenType.USER));
+        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED, JwtIssuer.getToken(userInsert.getId(), userInsert.getName(), TokenType.USER));
+    }
+
+    /**
+     * 登陆
+     *
+     * @param userLoginVo 登陆数据
+     * @return token
+     */
+    public Object login(UserLoginVo userLoginVo) {
+        User user = getByName(userLoginVo.getName());
+        if (user == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_USER_NAME);
+        }
+        if (!userLoginVo.getPassword().equals(user.getPassword())) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_USER_NAME);
+        }
+        return ResponseUtil.decorateReturnObject(ReturnNo.OK, JwtIssuer.getToken(user.getId(), user.getName(), TokenType.USER));
     }
 }

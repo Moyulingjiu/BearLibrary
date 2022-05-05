@@ -1,5 +1,6 @@
 package com.bear.service.controller;
 
+import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
 import com.bear.service.service.UserService;
 import com.bear.util.ResponseUtil;
@@ -33,5 +34,12 @@ public class UserController {
             @Valid @RequestBody UserRegisterVo registerVo
     ) {
         return userService.register(registerVo);
+    }
+
+    @PostMapping("/login")
+    public Object login(
+            @Valid @RequestBody UserLoginVo userLoginVo
+    ) {
+        return userService.login(userLoginVo);
     }
 }
