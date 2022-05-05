@@ -20,9 +20,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://112.74.185.224:3306/bear?serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/bear?serverTimezone=GMT%2B8
     username: bear
-    password: Bear123.
+    password: 123456
 
 mybatis:
   type-aliases-package: com.bear.service.model.po

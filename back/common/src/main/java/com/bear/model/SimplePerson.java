@@ -18,7 +18,7 @@ public class SimplePerson {
     /**
      * id号
      */
-    private Long id;
+    private Long id = 0L;
 
     /**
      * 姓名

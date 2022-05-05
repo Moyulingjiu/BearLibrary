@@ -240,4 +240,14 @@ public class Common {
             logger.debug(e.toString());
         }
     }
+
+    /**
+     * 获取秘钥
+     *
+     * @return 秘钥
+     */
+    public static String getSecret() {
+        // todo: 生产环境更改秘钥
+        return "111111";
+    }
 }

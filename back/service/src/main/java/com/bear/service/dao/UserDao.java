@@ -50,7 +50,7 @@ public class UserDao {
 
     public int updateById(User user) {
         UserPo userPo = Common.cloneObject(user, UserPo.class);
-        int i = userPoMapper.updateByPrimaryKey(userPo);
+        return userPoMapper.updateByPrimaryKey(userPo);
     }
 
     public int insert(User user) {
