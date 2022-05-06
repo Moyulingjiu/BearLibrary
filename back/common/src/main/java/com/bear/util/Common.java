@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 
 /**
@@ -18,6 +19,11 @@ import java.util.HashSet;
  */
 public class Common {
     private static final Logger logger = LoggerFactory.getLogger(Common.class);
+
+    /**
+     * 时间返回的格式
+     */
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd' 'HH:mm:ss.SSS";
 
     /**
      * SimplePerson的name字段
@@ -262,5 +268,15 @@ public class Common {
     public static String getPasswordSecret() {
         // todo: 生产环境更改秘钥
         return "111111";
+    }
+
+    /**
+     * 时间戳
+     *
+     * @return 当前时间戳
+     */
+    public static String getTimestamp() {
+        DateTimeFormatter dfDateTime = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        return dfDateTime.format(LocalDateTime.now());
     }
 }

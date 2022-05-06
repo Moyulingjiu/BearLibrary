@@ -49,7 +49,7 @@ public class ResponseUtil {
         obj.put(CODE, returnObject.getCode().getCode());
         obj.put(MESSAGE, returnObject.getMessage());
         obj.put(DATA, returnObject.getData());
-        obj.put(TIMESTAMP, LocalDateTime.now());
+        obj.put(TIMESTAMP, Common.getTimestamp());
         return obj;
     }
 
@@ -64,7 +64,7 @@ public class ResponseUtil {
         obj.put(CODE, returnNo.getCode());
         obj.put(MESSAGE, returnNo.getMessage());
         obj.put(DATA, null);
-        obj.put(TIMESTAMP, LocalDateTime.now());
+        obj.put(TIMESTAMP, Common.getTimestamp());
         return obj;
     }
 
@@ -87,7 +87,7 @@ public class ResponseUtil {
         obj.put(CODE, ReturnNo.OK.getCode());
         obj.put(MESSAGE, ReturnNo.OK.getMessage());
         obj.put(DATA, true);
-        obj.put(TIMESTAMP, LocalDateTime.now());
+        obj.put(TIMESTAMP, Common.getTimestamp());
         return obj;
     }
 
@@ -101,7 +101,26 @@ public class ResponseUtil {
         obj.put(CODE, ReturnNo.OK.getCode());
         obj.put(MESSAGE, ReturnNo.OK.getMessage());
         obj.put(DATA, false);
-        obj.put(TIMESTAMP, LocalDateTime.now());
+        obj.put(TIMESTAMP, Common.getTimestamp());
         return obj;
     }
+
+    /**
+     * 无效的token
+     *
+     * @return map
+     */
+    public static Object badToken() {
+        return decorateReturnObject(ReturnNo.NOT_LOGIN);
+    }
+
+    /**
+     * 拒绝访问
+     *
+     * @return map
+     */
+    public static Object deny() {
+        return decorateReturnObject(ReturnNo.FORBIDDEN);
+    }
+
 }

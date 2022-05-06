@@ -1,5 +1,9 @@
 package com.bear.service.controller;
 
+import com.bear.login.AdminLoginCheck;
+import com.bear.login.LoginId;
+import com.bear.login.LoginName;
+import com.bear.login.UserLoginCheck;
 import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
 import com.bear.service.service.UserService;
@@ -42,10 +46,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @UserLoginCheck
     public Object get(
-            @NotNull @PathVariable Long id
+            @NotNull @PathVariable Long id,
+            @LoginId Long userId
     ) {
-        System.out.println(id);
+        if (!id.equals(userId)) {
+        }
         return userService.get(id);
     }
 }

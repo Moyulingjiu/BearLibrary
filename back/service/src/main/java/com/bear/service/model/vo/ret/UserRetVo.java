@@ -2,6 +2,8 @@ package com.bear.service.model.vo.ret;
 
 import com.bear.model.SimplePerson;
 import com.bear.service.model.bo.Gender;
+import com.bear.util.Common;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -101,7 +103,8 @@ public class UserRetVo {
     /**
      * 创建时间
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now();
+    @JsonFormat(pattern = Common.DATE_TIME_FORMAT, timezone = "GMT+8")
+    private LocalDateTime gmtCreate;
 
     /**
      * 创建人
@@ -111,7 +114,8 @@ public class UserRetVo {
     /**
      * 修改时间
      */
-    private LocalDateTime gmtModified = LocalDateTime.now();
+    @JsonFormat(pattern = Common.DATE_TIME_FORMAT, timezone = "GMT+8")
+    private LocalDateTime gmtModified;
 
     /**
      * 修改人

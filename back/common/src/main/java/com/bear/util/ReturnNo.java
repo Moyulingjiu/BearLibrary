@@ -23,7 +23,7 @@ public enum ReturnNo {
      */
     RESOURCE_NOT_EXIST(404, "请求的资源不存在"),
     FORBIDDEN(403, "无权访问请求的资源"),
-    NOT_LOGIN(401, "未登录，或者jwt不合法"),
+    NOT_LOGIN(401, "未登录，或者token不合法"),
     ILLEGAL_REQUEST(405, "不合法的请求，请检查请求字段"),
 
     /**
