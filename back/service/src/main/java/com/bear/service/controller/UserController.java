@@ -6,12 +6,10 @@ import com.bear.service.service.UserService;
 import com.bear.util.ResponseUtil;
 import com.bear.util.ReturnNo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * 用户controller层
@@ -41,5 +39,13 @@ public class UserController {
             @Valid @RequestBody UserLoginVo userLoginVo
     ) {
         return userService.login(userLoginVo);
+    }
+
+    @GetMapping("/{id}")
+    public Object get(
+            @NotNull @PathVariable Long id
+    ) {
+        System.out.println(id);
+        return userService.get(id);
     }
 }

@@ -46,6 +46,9 @@ public class Common {
      * @return 克隆之后的对象
      */
     public static <T> T cloneObject(Object bo, Class<T> voClass) {
+        if (bo == null) {
+            return null;
+        }
         Class<?> boClass = bo.getClass();
         T ret = null;
 
@@ -246,7 +249,17 @@ public class Common {
      *
      * @return 秘钥
      */
-    public static String getSecret() {
+    public static String getTokenSecret() {
+        // todo: 生产环境更改秘钥
+        return "111111";
+    }
+
+    /**
+     * 获取密码加密的秘钥
+     *
+     * @return 秘钥
+     */
+    public static String getPasswordSecret() {
         // todo: 生产环境更改秘钥
         return "111111";
     }

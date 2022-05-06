@@ -38,7 +38,8 @@ public enum ReturnNo {
     /**
      * 登陆的错误
      */
-    ILLEGAL_PASSWORD_USER_NAME(801, "错误的用户名或密码");
+    ILLEGAL_PASSWORD_USER_NAME(801, "错误的用户名或密码"),
+    NEED_CHANGE_TOKEN(802, "需要更新token");
 
     private final int code;
     private final String message;

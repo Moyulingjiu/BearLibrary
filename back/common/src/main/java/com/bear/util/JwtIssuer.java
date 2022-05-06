@@ -20,7 +20,7 @@ public class JwtIssuer {
     public static String getToken(@NotNull Long id, @NotNull String name, @NotNull TokenType type) {
         return JWT.create()
                 // 过期时间
-                .withExpiresAt(new Date(System.currentTimeMillis()))
+                .withExpiresAt(new Date(System.currentTimeMillis() + DurationTimeUtil.DAY))
                 // 签发时间
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 // 接收人
@@ -32,6 +32,6 @@ public class JwtIssuer {
                 // 接收人昵称
                 .withClaim("name", name)
                 // 加密
-                .sign(Algorithm.HMAC256(Common.getSecret()));
+                .sign(Algorithm.HMAC256(Common.getTokenSecret()));
     }
 }

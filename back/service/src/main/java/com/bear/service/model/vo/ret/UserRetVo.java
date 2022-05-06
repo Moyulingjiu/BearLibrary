@@ -1,7 +1,7 @@
-package com.bear.service.model.bo;
+package com.bear.service.model.vo.ret;
 
 import com.bear.model.SimplePerson;
-import com.bear.util.Common;
+import com.bear.service.model.bo.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserRetVo {
     /**
      * id号
      */
@@ -29,11 +29,6 @@ public class User {
     private String name;
 
     /**
-     * 密码，该密码都是加密后的密码
-     */
-    private String password;
-
-    /**
      * 邀请码id
      */
     private Long invitationCodeId;
@@ -41,17 +36,17 @@ public class User {
     /**
      * 昵称（用于展示）
      */
-    private String nickname = "";
+    private String nickname;
 
     /**
      * 头像对应的url或者base64编码后的图片
      */
-    private String avatar = "";
+    private String avatar;
 
     /**
      * 生日（是日期格式）
      */
-    private String birthday = "";
+    private String birthday;
 
     /**
      * 性别
@@ -61,7 +56,7 @@ public class User {
     /**
      * 电话
      */
-    private String phone = "";
+    private String phone;
 
     /**
      * 荣誉值
@@ -104,11 +99,6 @@ public class User {
     private Long practice = 0L;
 
     /**
-     * 用户是否有效
-     */
-    private Integer valid = 1;
-
-    /**
      * 创建时间
      */
     private LocalDateTime gmtCreate = LocalDateTime.now();
@@ -116,7 +106,7 @@ public class User {
     /**
      * 创建人
      */
-    private SimplePerson create = new SimplePerson();
+    private SimplePerson create;
 
     /**
      * 修改时间
@@ -126,5 +116,5 @@ public class User {
     /**
      * 修改人
      */
-    private SimplePerson modified = new SimplePerson();
+    private SimplePerson modified;
 }

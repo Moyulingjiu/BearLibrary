@@ -12,6 +12,11 @@ public class RedisPrefix {
     public static final String USER_NAME_EXIST = "user_name_exist_";
 
     /**
+     * 管理员名是否已经存在
+     */
+    public static final String ADMIN_NAME_EXIST = "admin_name_exist_";
+
+    /**
      * 注册时锁住某一个token
      */
     public static final String REGISTER_TOKEN_COVER = "register_token_cover_";

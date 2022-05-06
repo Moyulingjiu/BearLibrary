@@ -36,16 +36,7 @@ public class UserDao {
         if (StringUtils.isNotEmpty(s)) {
             return true;
         }
-        UserPoExample example = new UserPoExample();
-        UserPoExample.Criteria criteria = example.createCriteria();
-        criteria.andNameEqualTo(name);
-        criteria.andValidEqualTo(1);
-        List<UserPo> userPos = userPoMapper.selectByExample(example);
-        if (userPos.size() > 0) {
-            redisUtils.put(RedisPrefix.USER_NAME_EXIST + name, "1");
-            return true;
-        }
-        return false;
+        return selectByName(name) != null;
     }
 
     public User selectByName(String name) {
@@ -54,7 +45,7 @@ public class UserDao {
         criteria.andNameEqualTo(name);
         criteria.andValidEqualTo(1);
         List<UserPo> userPos = userPoMapper.selectByExample(example);
-        if (userPos.size() != 1) {
+        if (userPos.size() == 0) {
             return null;
         }
         // 写入redis

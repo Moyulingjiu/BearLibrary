@@ -1,5 +1,6 @@
 package com.bear.service.service;
 
+import com.bear.encript.Aes;
 import com.bear.model.TokenType;
 import com.bear.service.dao.InvitationCodeDao;
 import com.bear.service.dao.UserDao;
@@ -7,7 +8,9 @@ import com.bear.service.model.bo.InvitationCode;
 import com.bear.service.model.bo.User;
 import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
+import com.bear.service.model.vo.ret.UserRetVo;
 import com.bear.service.util.RedisUtils;
+import com.bear.service.util.StringUtils;
 import com.bear.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +39,8 @@ public class UserService {
      * @param name 用户名
      * @return 用户（如果不存在返回null）
      */
-    private User getByName(String name) {
+    @Transactional(rollbackFor = Exception.class)
+    public User getByName(String name) {
         return userDao.selectByName(name);
     }
 
@@ -56,7 +60,7 @@ public class UserService {
         // 通过redis，对邀请码进行加锁
         String lockToken = redisUtils.lock(
                 RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(),
-                DurationTimeUtil.TEN_MINUTE,
+                DurationTimeUtil.HALF_MINUTE,
                 DurationTimeUtil.SECOND
         );
         if (lockToken == null) {
@@ -73,12 +77,23 @@ public class UserService {
         }
 
         // 检查邀请码是否过期
-        if (invitationCode.getValidTime().isBefore(LocalDateTime.now())) {
+        if (invitationCode.getValidTime() == null || invitationCode.getValidTime().isBefore(LocalDateTime.now())) {
             return ResponseUtil.decorateReturnObject(ReturnNo.CODE_EXPIRE);
+        }
+
+        // 检查密码和用户名是否合法
+        if (!StringUtils.validUserName(userRegisterVo.getName())) {
+            redisUtils.unlock(RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(), lockToken);
+            return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_USER_NAME_FORMAT);
+        }
+        if (!StringUtils.validPassword(userRegisterVo.getPassword())) {
+            redisUtils.unlock(RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(), lockToken);
+            return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_FORMAT);
         }
 
         // 进行注册，生产user对象
         User user = Common.cloneObject(userRegisterVo, User.class);
+        user.setPassword(Aes.encrypt(user.getPassword(), Common.getPasswordSecret()));
         user.setInvitationCodeId(invitationCode.getId());
         int insert = userDao.insert(user);
         if (insert == 0) {
@@ -104,14 +119,32 @@ public class UserService {
      * @param userLoginVo 登陆数据
      * @return token
      */
+    @Transactional(rollbackFor = Exception.class)
     public Object login(UserLoginVo userLoginVo) {
         User user = getByName(userLoginVo.getName());
-        if (user == null) {
+        if (user == null || !StringUtils.validPassword(userLoginVo.getPassword())) {
             return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_USER_NAME);
         }
-        if (!userLoginVo.getPassword().equals(user.getPassword())) {
+        String password = Aes.decrypt(user.getPassword(), Common.getPasswordSecret());
+        if (!userLoginVo.getPassword().equals(password)) {
             return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_USER_NAME);
         }
         return ResponseUtil.decorateReturnObject(ReturnNo.OK, JwtIssuer.getToken(user.getId(), user.getName(), TokenType.USER));
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @param id 用户id
+     * @return 用户数据
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Object get(Long id) {
+        User user = userDao.selectById(id);
+        if (user == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        UserRetVo userRetVo = Common.cloneObject(user, UserRetVo.class);
+        return ResponseUtil.decorateReturnObject(ReturnNo.OK, userRetVo);
     }
 }

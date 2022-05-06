@@ -3,9 +3,16 @@ package com.bear.service.dao;
 import com.bear.service.mapper.AdministratorPoMapper;
 import com.bear.service.model.bo.Administrator;
 import com.bear.service.model.po.AdministratorPo;
+import com.bear.service.model.po.AdministratorPoExample;
+import com.bear.service.model.po.UserPoExample;
+import com.bear.service.util.RedisUtils;
+import com.bear.service.util.StringUtils;
 import com.bear.util.Common;
+import com.bear.util.RedisPrefix;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * 管理员dao层
@@ -17,9 +24,32 @@ import org.springframework.stereotype.Repository;
 public class AdministratorDao {
     @Autowired
     private AdministratorPoMapper administratorPoMapper;
+    @Autowired
+    private RedisUtils redisUtils;
 
     public Administrator selectById(Long id) {
         AdministratorPo administratorPo = administratorPoMapper.selectByPrimaryKey(id);
         return Common.cloneObject(administratorPo, Administrator.class);
+    }
+
+    public boolean existName(String name) {
+        String s = redisUtils.get(RedisPrefix.ADMIN_NAME_EXIST + name);
+        if (StringUtils.isNotEmpty(s)) {
+            return true;
+        }
+        return selectByName(name) != null;
+    }
+
+    public Administrator selectByName(String name) {
+        AdministratorPoExample example = new AdministratorPoExample();
+        AdministratorPoExample.Criteria criteria = example.createCriteria();
+        criteria.andNameEqualTo(name);
+        criteria.andValidEqualTo(1);
+        List<AdministratorPo> administratorPos = administratorPoMapper.selectByExample(example);
+        if (administratorPos.size() == 0) {
+            return  null;
+        }
+        redisUtils.put(RedisPrefix.ADMIN_NAME_EXIST + name, "1");
+        return Common.cloneObject(administratorPos.get(0), Administrator.class);
     }
 }
