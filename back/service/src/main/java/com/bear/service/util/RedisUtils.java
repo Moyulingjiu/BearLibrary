@@ -5,6 +5,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.RedisConnectionUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,8 @@ public class RedisUtils {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
 
     /**
@@ -59,6 +62,36 @@ public class RedisUtils {
      */
     public void put(String key, String value) {
         stringRedisTemplate.opsForValue().set(key, value);
+    }
+
+    /**
+     * 获取某个对象
+     *
+     * @param key key
+     * @return 对象
+     */
+    public Object getObj(String key) {
+        return redisTemplate.opsForValue().get(key);
+    }
+
+    /**
+     * 获取并且删除某个对象
+     *
+     * @param key key
+     * @return 对象
+     */
+    public Object getAndDeleteObj(String key) {
+        return redisTemplate.opsForValue().getAndDelete(key);
+    }
+
+    /**
+     * 放入某个对象
+     *
+     * @param key key
+     * @param obj 对象
+     */
+    public void putObj(String key, Object obj) {
+        redisTemplate.opsForValue().set(key, obj);
     }
 
     /**

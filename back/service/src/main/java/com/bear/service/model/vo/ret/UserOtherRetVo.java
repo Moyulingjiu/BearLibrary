@@ -1,17 +1,12 @@
 package com.bear.service.model.vo.ret;
 
-import com.bear.model.SimplePerson;
 import com.bear.service.model.bo.Gender;
-import com.bear.util.Common;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 /**
- * 用户类
+ * 查看其他用户的时候
  *
  * @author moyulingjiu
  * create 2022年3月27日
@@ -19,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRetVo {
+public class UserOtherRetVo {
     /**
      * id号
      */
@@ -29,11 +24,6 @@ public class UserRetVo {
      * 用户名（登陆用）
      */
     private String name;
-
-    /**
-     * 邀请码id
-     */
-    private Long invitationCodeId;
 
     /**
      * 昵称（用于展示）
@@ -61,21 +51,6 @@ public class UserRetVo {
     private String phone;
 
     /**
-     * 荣誉值
-     */
-    private Long honorPoint = 0L;
-
-    /**
-     * 自律值
-     */
-    private Long selfControlPoint = 0L;
-
-    /**
-     * 贡献值
-     */
-    private Long contributionPoint = 0L;
-
-    /**
      * 行走的经验值
      */
     private Long walk = 0L;
@@ -99,10 +74,4 @@ public class UserRetVo {
      * 实践的经验值
      */
     private Long practice = 0L;
-
-    /**
-     * 创建时间
-     */
-    @JsonFormat(pattern = Common.DATE_TIME_FORMAT, timezone = "GMT+8")
-    private LocalDateTime gmtCreate;
 }

@@ -83,4 +83,12 @@ public class PasswordTest {
         System.out.println(ans);
         assert ans;
     }
+
+    @Test
+    public void test11() {
+        String name = "1wang";
+        boolean ans = StringUtils.validUserName(name);
+        System.out.println(ans);
+        assert !ans;
+    }
 }

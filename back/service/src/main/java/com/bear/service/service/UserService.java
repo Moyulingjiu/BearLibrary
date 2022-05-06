@@ -8,6 +8,7 @@ import com.bear.service.model.bo.InvitationCode;
 import com.bear.service.model.bo.User;
 import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
+import com.bear.service.model.vo.ret.UserOtherRetVo;
 import com.bear.service.model.vo.ret.UserRetVo;
 import com.bear.service.util.RedisUtils;
 import com.bear.service.util.StringUtils;
@@ -150,5 +151,21 @@ public class UserService {
         }
         UserRetVo userRetVo = Common.cloneObject(user, UserRetVo.class);
         return ResponseUtil.decorateReturnObject(ReturnNo.OK, userRetVo);
+    }
+
+    /**
+     * 获取其他用户信息
+     *
+     * @param id 用户id
+     * @return 用户数据
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Object getOther(Long id) {
+        User user = userDao.selectById(id);
+        if (user == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        UserOtherRetVo otherRetVo = Common.cloneObject(user, UserOtherRetVo.class);
+        return ResponseUtil.decorateReturnObject(ReturnNo.OK, otherRetVo);
     }
 }

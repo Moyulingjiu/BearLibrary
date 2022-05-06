@@ -27,8 +27,14 @@ public class UserDao {
     private RedisUtils redisUtils;
 
     public User selectById(Long id) {
+        Object obj = redisUtils.getObj(RedisPrefix.USER + id);
+        if (obj != null) {
+            return (User) obj;
+        }
         UserPo userPo = userPoMapper.selectByPrimaryKey(id);
-        return Common.cloneObject(userPo, User.class);
+        User user = Common.cloneObject(userPo, User.class);
+        redisUtils.putObj(RedisPrefix.USER + id, user);
+        return user;
     }
 
     public boolean existName(String name) {
@@ -40,6 +46,10 @@ public class UserDao {
     }
 
     public User selectByName(String name) {
+        Object obj = redisUtils.getObj(RedisPrefix.USER + name);
+        if (obj != null) {
+            return (User) obj;
+        }
         UserPoExample example = new UserPoExample();
         UserPoExample.Criteria criteria = example.createCriteria();
         criteria.andNameEqualTo(name);
@@ -50,7 +60,9 @@ public class UserDao {
         }
         // 写入redis
         redisUtils.put(RedisPrefix.USER_NAME_EXIST + name, "1");
-        return Common.cloneObject(userPos.get(0), User.class);
+        User user = Common.cloneObject(userPos.get(0), User.class);
+        redisUtils.putObj(RedisPrefix.USER + name, user);
+        return user;
     }
 
     public int updateById(User user) {
