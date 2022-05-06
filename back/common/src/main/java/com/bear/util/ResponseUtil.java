@@ -1,5 +1,6 @@
 package com.bear.util;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,11 +11,21 @@ import java.util.Map;
  */
 public class ResponseUtil {
     /**
-     * 字段名
+     * 状态码
      */
     private static final String CODE = "code";
+    /**
+     * 消息
+     */
     private static final String MESSAGE = "msg";
+    /**
+     * 数据
+     */
     private static final String DATA = "data";
+    /**
+     * 时间戳
+     */
+    private static final String TIMESTAMP = "timestamp";
 
     /**
      * 装饰data对象
@@ -38,6 +49,7 @@ public class ResponseUtil {
         obj.put(CODE, returnObject.getCode().getCode());
         obj.put(MESSAGE, returnObject.getMessage());
         obj.put(DATA, returnObject.getData());
+        obj.put(TIMESTAMP, LocalDateTime.now());
         return obj;
     }
 
@@ -52,6 +64,7 @@ public class ResponseUtil {
         obj.put(CODE, returnNo.getCode());
         obj.put(MESSAGE, returnNo.getMessage());
         obj.put(DATA, null);
+        obj.put(TIMESTAMP, LocalDateTime.now());
         return obj;
     }
 
@@ -74,6 +87,7 @@ public class ResponseUtil {
         obj.put(CODE, ReturnNo.OK.getCode());
         obj.put(MESSAGE, ReturnNo.OK.getMessage());
         obj.put(DATA, true);
+        obj.put(TIMESTAMP, LocalDateTime.now());
         return obj;
     }
 
@@ -87,6 +101,7 @@ public class ResponseUtil {
         obj.put(CODE, ReturnNo.OK.getCode());
         obj.put(MESSAGE, ReturnNo.OK.getMessage());
         obj.put(DATA, false);
+        obj.put(TIMESTAMP, LocalDateTime.now());
         return obj;
     }
 }

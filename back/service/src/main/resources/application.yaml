@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
@@ -11,10 +11,15 @@ spring:
     port: 6379
     lettuce:
       pool:
+        # 最大连接数量
         max-active: 100
+        # 最大空闲连接数量
         max-idle: 100
+        # 最小空闲连接数量
         min-idle: 0
+        # 连接池最大阻塞等待时间
         max-wait: -1
+    # 超时时间，单位：ms
     timeout: 5000
 
   datasource:
