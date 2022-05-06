@@ -70,14 +70,17 @@ public class UserService {
         // 检查邀请码是否被其他人使用了
         InvitationCode invitationCode = invitationCodeDao.selectByCode(userRegisterVo.getCode());
         if (invitationCode == null) {
+            redisUtils.unlock(RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(), lockToken);
             return ResponseUtil.decorateReturnObject(ReturnNo.CODE_EXPIRE);
         }
         if (invitationCode.getUserId() != null) {
+            redisUtils.unlock(RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(), lockToken);
             return ResponseUtil.decorateReturnObject(ReturnNo.CODE_BE_USED);
         }
 
         // 检查邀请码是否过期
         if (invitationCode.getValidTime() == null || invitationCode.getValidTime().isBefore(LocalDateTime.now())) {
+            redisUtils.unlock(RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(), lockToken);
             return ResponseUtil.decorateReturnObject(ReturnNo.CODE_EXPIRE);
         }
 
@@ -97,6 +100,7 @@ public class UserService {
         user.setInvitationCodeId(invitationCode.getId());
         int insert = userDao.insert(user);
         if (insert == 0) {
+            redisUtils.unlock(RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(), lockToken);
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
 

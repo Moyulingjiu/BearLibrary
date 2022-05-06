@@ -45,13 +45,14 @@ public class UserController {
         return userService.login(userLoginVo);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     @UserLoginCheck
     public Object get(
             @NotNull @PathVariable Long id,
             @LoginId Long userId
     ) {
         if (!id.equals(userId)) {
+            return ResponseUtil.deny();
         }
         return userService.get(id);
     }
