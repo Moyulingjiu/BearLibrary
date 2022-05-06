@@ -13,7 +13,7 @@ public class ResponseUtil {
     /**
      * 状态码
      */
-    private static final String CODE = "code";
+    private static final String CODE = "status";
     /**
      * 消息
      */

@@ -23,7 +23,7 @@ public class StringUtils {
      * @return 是否合法
      */
     public static boolean validPassword(String password) {
-        String regex = "^[a-zA-Z\\d,.!]{6,16}$";
+        String regex = "^[a-zA-Z\\d,.!]{5,16}$";
         return password.matches(regex);
     }
 

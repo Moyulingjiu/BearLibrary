@@ -47,7 +47,7 @@ public class Administrator implements Serializable {
     /**
      * 创建人
      */
-    private SimplePerson create;
+    private SimplePerson create = new SimplePerson();
 
     /**
      * 修改时间
@@ -57,5 +57,5 @@ public class Administrator implements Serializable {
     /**
      * 修改人
      */
-    private SimplePerson modified;
+    private SimplePerson modified = new SimplePerson();
 }

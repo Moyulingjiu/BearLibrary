@@ -2,6 +2,7 @@ package com.bear.service.dao;
 
 import com.bear.service.mapper.AdministratorPoMapper;
 import com.bear.service.model.bo.Administrator;
+import com.bear.service.model.bo.User;
 import com.bear.service.model.po.AdministratorPo;
 import com.bear.service.model.po.AdministratorPoExample;
 import com.bear.service.model.po.UserPoExample;
@@ -28,8 +29,14 @@ public class AdministratorDao {
     private RedisUtils redisUtils;
 
     public Administrator selectById(Long id) {
+        Object obj = redisUtils.getObj(RedisPrefix.ADMIN + id);
+        if (obj != null) {
+            return (Administrator) obj;
+        }
         AdministratorPo administratorPo = administratorPoMapper.selectByPrimaryKey(id);
-        return Common.cloneObject(administratorPo, Administrator.class);
+        Administrator administrator = Common.cloneObject(administratorPo, Administrator.class);
+        redisUtils.putObj(RedisPrefix.ADMIN + id, administrator);
+        return administrator;
     }
 
     public boolean existName(String name) {
@@ -41,6 +48,10 @@ public class AdministratorDao {
     }
 
     public Administrator selectByName(String name) {
+        Object obj = redisUtils.getObj(RedisPrefix.ADMIN + name);
+        if (obj != null) {
+            return (Administrator) obj;
+        }
         AdministratorPoExample example = new AdministratorPoExample();
         AdministratorPoExample.Criteria criteria = example.createCriteria();
         criteria.andNameEqualTo(name);
@@ -50,6 +61,13 @@ public class AdministratorDao {
             return  null;
         }
         redisUtils.put(RedisPrefix.ADMIN_NAME_EXIST + name, "1");
-        return Common.cloneObject(administratorPos.get(0), Administrator.class);
+        Administrator administrator = Common.cloneObject(administratorPos.get(0), Administrator.class);
+        redisUtils.putObj(RedisPrefix.ADMIN + name, administrator);
+        return administrator;
+    }
+
+    public int insert(Administrator administrator) {
+        AdministratorPo administratorPo = Common.cloneObject(administrator, AdministratorPo.class);
+        return administratorPoMapper.insert(administratorPo);
     }
 }

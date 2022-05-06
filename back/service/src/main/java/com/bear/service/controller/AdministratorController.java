@@ -1,12 +1,15 @@
 package com.bear.service.controller;
 
+import com.bear.login.AdminLoginCheck;
+import com.bear.login.LoginId;
+import com.bear.login.LoginName;
+import com.bear.service.model.vo.receive.AdminCreateVo;
 import com.bear.service.model.vo.receive.AdminLoginVo;
 import com.bear.service.service.AdministratorService;
+import com.bear.util.ResponseUtil;
+import com.bear.util.ReturnNo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -19,13 +22,31 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/administrator", produces = "application/json;charset=UTF-8")
 public class AdministratorController {
+
+    private final AdministratorService administratorService;
+
     @Autowired
-    AdministratorService administratorService;
+    public AdministratorController(AdministratorService administratorService) {
+        this.administratorService = administratorService;
+    }
 
     @PostMapping("/login")
     public Object login(
             @Valid @RequestBody AdminLoginVo adminLoginVo
     ) {
         return administratorService.login(adminLoginVo);
+    }
+
+    @PutMapping("/administrator")
+    @AdminLoginCheck
+    public Object create(
+        @Valid @RequestBody AdminCreateVo adminCreateVo,
+        @LoginId Long adminId,
+        @LoginName String adminName
+    ) {
+        if (adminId != 1L) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.FORBIDDEN);
+        }
+        return administratorService.create(adminCreateVo, adminId, adminName);
     }
 }

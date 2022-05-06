@@ -11,7 +11,7 @@
 > ```json
 > {
 >     "msg": "消息",
->     "code": 状态码,
+>     "status": 状态码,
 >     "data": {
 >         // 数据载体
 >     },
@@ -24,7 +24,7 @@
 > ```json
 > {
 >     "msg": "成功",
->     "code": 200,
+>     "status": 200,
 >     "data": "token",
 >     "timestamp": "2022-05-06 22:10:37.703"
 > }
@@ -41,7 +41,7 @@
 > ```json
 > {
 >     "msg": "成功",
->     "code": 200,
+>     "status": 200,
 >     "data": {
 >         "id": 1,
 >         "name": "bear",
@@ -243,4 +243,44 @@ token
 ```
 
 
+
+## 管理员：`/administrator`
+
+### 【post】登陆：`/login`
+
+输入：
+
+```json
+{
+    "name": "用户名",
+    "password": "密码"
+}
+```
+
+输出：
+
+```json
+token
+```
+
+
+
+### 【put】创建管理员：`/administrator`
+
+输入：
+
+```json
+{
+    "name": "用户名",
+    "password": "密码"
+}
+```
+
+输出：
+
+> 根据状态码来确定是否创建成功
+
+```json
+
+```
 
