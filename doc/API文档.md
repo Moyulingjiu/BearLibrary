@@ -330,6 +330,136 @@ token
 
 
 
+### 【post】修改管理员用户名：`/administrator/name`（管理员）
+
+输入：
+
+```json
+{
+    "name": "用户名"
+}
+```
+
+输出：
+
+> 根据状态码来确定是否修改成功
+
+```json
+
+```
+
+
+
+### 【delete】删除管理员：`/administrator/{id}`（管理员）
+
+输入：
+
+```json
+```
+
+输出：
+
+> 根据状态码来确定是否删除成功
+
+```json
+```
+
+
+
+### 【get】获取管理员`/administrator/{id}`（管理员）
+
+输入：
+
+```json
+
+```
+
+输出：
+
+```json
+{
+    "id": 4,
+    "name": "admin4",
+    "valid": 0,
+    "gmtCreate": "2022-05-06T23:42:03",
+    "create": {
+        "id": 1,
+        "name": "admin"
+    },
+    "gmtModified": "2022-05-07T13:49:21",
+    "modified": {
+        "id": 1,
+        "name": "admin"
+    }
+}
+```
+
+
+
+### 【get】分页条件查询管理员`/administrators`（管理员）
+
+输入：
+
+```json
+{
+    "page":  "页面",
+    "pageSize": "页面大小",
+    "name": "用户名",
+    "valid": "是否没有被删除",
+    "beginTime": "创建时间下限",
+    "endTime": "创建时间上限"
+}
+```
+
+输出：
+
+```json
+{
+    "msg": "成功",
+    "data": {
+        "page": 1,
+        "pageSize": 2,
+        "total": 2,
+        "list": [
+            {
+                "id": 1,
+                "name": "admin",
+                "valid": 1,
+                "gmtCreate": "2022-05-06T23:27:39",
+                "create": {
+                    "id": 0,
+                    "name": "system"
+                },
+                "gmtModified": "2022-05-06T23:27:39",
+                "modified": {
+                    "id": 0,
+                    "name": "system"
+                }
+            },
+            {
+                "id": 2,
+                "name": "admin2",
+                "valid": 1,
+                "gmtCreate": "2022-05-06T23:39:59",
+                "create": {
+                    "id": 0,
+                    "name": "system"
+                },
+                "gmtModified": "2022-05-07T13:46:34",
+                "modified": {
+                    "id": 2,
+                    "name": "admin2"
+                }
+            }
+        ]
+    },
+    "status": 200,
+    "timestamp": "2022-05-07 14:24:57.137"
+}
+```
+
+
+
 ## 邀请码：`/invitation_code`
 
 ### 【put】创建邀请码：`/invitation_code`（管理员）
@@ -339,7 +469,7 @@ token
 ```json
 {
     "code": "邀请码",
-    "validTime": "2022-05-09 13:56:16.000" // 根据情况修改时间
+    "validTime": "2022-05-09T13:56:16.000" // 根据情况修改时间
 }
 ```
 

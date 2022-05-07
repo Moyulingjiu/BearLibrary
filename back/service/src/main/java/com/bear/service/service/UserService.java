@@ -2,6 +2,7 @@ package com.bear.service.service;
 
 import com.bear.encript.Aes;
 import com.bear.model.TokenType;
+import com.bear.service.dao.AdministratorDao;
 import com.bear.service.dao.InvitationCodeDao;
 import com.bear.service.dao.UserDao;
 import com.bear.service.model.bo.InvitationCode;
@@ -31,6 +32,8 @@ public class UserService {
     @Autowired
     private UserDao userDao;
     @Autowired
+    private AdministratorDao administratorDao;
+    @Autowired
     private InvitationCodeDao invitationCodeDao;
     @Autowired
     private RedisUtils redisUtils;
@@ -54,8 +57,8 @@ public class UserService {
      */
     @Transactional(rollbackFor = Exception.class)
     public Object register(UserRegisterVo userRegisterVo) {
-        // 检查邀请码是否存在
-        if (userDao.existName(userRegisterVo.getName())) {
+        // 检查名字是否已经被人使用
+        if (userDao.existName(userRegisterVo.getName()) || administratorDao.existName(userRegisterVo.getName())) {
             return ResponseUtil.decorateReturnObject(ReturnNo.EXIST_USER_NAME);
         }
 
@@ -100,6 +103,8 @@ public class UserService {
         User user = Common.cloneObject(userRegisterVo, User.class);
         user.setPassword(Aes.encrypt(user.getPassword(), Common.getPasswordSecret()));
         user.setInvitationCodeId(invitationCode.getId());
+        user.setCreate(invitationCode.getCreate());
+        user.setModified(invitationCode.getCreate());
         int insert = userDao.insert(user);
         if (insert == 0) {
             redisUtils.unlock(RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(), lockToken);

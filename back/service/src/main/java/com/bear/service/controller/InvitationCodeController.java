@@ -38,7 +38,6 @@ public class InvitationCodeController {
             @LoginId Long id,
             @LoginName String name
     ) {
-        System.out.println(invitationCodeVo);
         return invitationCodeService.create(invitationCodeVo, id, name);
     }
 }

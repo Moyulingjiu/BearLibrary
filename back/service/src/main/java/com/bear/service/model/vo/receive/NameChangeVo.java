@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 密码修改
+ * 用户名修改
  *
  * @author moyulingjiu
  * create 2022年5月7日
@@ -15,9 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordChangeVo {
+public class NameChangeVo {
     @NotBlank
-    private String oldPassword;
-    @NotBlank
-    private String newPassword;
+    private String name;
 }

@@ -74,7 +74,9 @@ public class UserDao {
             // 这里需要删除原来的用户名对应的缓存，可能用户名已经修改
             redisUtils.deleteKey(RedisPrefix.USER + origin.getName());
             redisUtils.deleteKey(RedisPrefix.USER + user.getId());
-            if (!origin.getName().equals(user.getName())) {
+            if (!origin.getName().equals(user.getName()) && user.getName() != null) {
+                redisUtils.deleteKey(RedisPrefix.USER_NAME_EXIST + origin.getName());
+            } else if (user.getValid() == 0) {
                 redisUtils.deleteKey(RedisPrefix.USER_NAME_EXIST + origin.getName());
             }
         }

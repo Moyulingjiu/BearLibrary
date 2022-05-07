@@ -23,7 +23,7 @@ public class Common {
     /**
      * 时间返回的格式
      */
-    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd' 'HH:mm:ss.SSS";
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
     /**
      * SimplePerson的name字段

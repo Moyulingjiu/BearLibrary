@@ -10,9 +10,13 @@ import com.bear.service.util.RedisUtils;
 import com.bear.service.util.StringUtils;
 import com.bear.util.Common;
 import com.bear.util.RedisPrefix;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,10 +88,37 @@ public class AdministratorDao {
             // 这里需要删除原来用户名的
             redisUtils.deleteKey(RedisPrefix.ADMIN + origin.getName());
             redisUtils.deleteKey(RedisPrefix.ADMIN + administrator.getId());
-            if (!origin.getName().equals(administrator.getName())) {
+            if (!origin.getName().equals(administrator.getName()) && administrator.getName() != null) {
+                redisUtils.deleteKey(RedisPrefix.ADMIN_NAME_EXIST + origin.getName());
+            } else if (administrator.getValid() == 0) {
                 redisUtils.deleteKey(RedisPrefix.ADMIN_NAME_EXIST + origin.getName());
             }
         }
         return i;
+    }
+
+    public PageInfo<Administrator> selectAll(Integer page, Integer pageSize, String name, Integer valid, LocalDateTime beginTime, LocalDateTime endTime) {
+        AdministratorPoExample example = new AdministratorPoExample();
+        AdministratorPoExample.Criteria criteria = example.createCriteria();
+        if (name != null) {
+            criteria.andNameEqualTo(name);
+        }
+        if (valid != null) {
+            criteria.andValidEqualTo(valid);
+        }
+        if (beginTime != null) {
+            criteria.andGmtCreateGreaterThan(beginTime);
+        }
+        if (endTime != null) {
+            criteria.andGmtCreateLessThan(endTime);
+        }
+        PageHelper.startPage(page, pageSize);
+        List<AdministratorPo> administratorPos = administratorPoMapper.selectByExample(example);
+        ArrayList<Administrator> administrators = new ArrayList<>();
+        for (AdministratorPo administratorPo : administratorPos) {
+            Administrator administrator = Common.cloneObject(administratorPo, Administrator.class);
+            administrators.add(administrator);
+        }
+        return new PageInfo<>(administrators);
     }
 }
