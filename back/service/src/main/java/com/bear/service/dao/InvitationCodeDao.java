@@ -69,4 +69,13 @@ public class InvitationCodeDao {
         }
         return i;
     }
+
+    public int insert(InvitationCode invitationCode) {
+        InvitationCodePo invitationCodePo = Common.cloneObject(invitationCode, InvitationCodePo.class);
+        int insert = invitationCodePoMapper.insert(invitationCodePo);
+        if (insert > 0) {
+            redisUtils.deleteKey(RedisPrefix.INVITATION_CODE + invitationCode.getCode());
+        }
+        return insert;
+    }
 }

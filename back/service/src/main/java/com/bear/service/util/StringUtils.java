@@ -37,4 +37,15 @@ public class StringUtils {
         String regex = "^[a-zA-Z][a-zA-z\\d]{3,9}$";
         return name.matches(regex);
     }
+
+    /**
+     * 检验邀请码的合法性
+     *
+     * @param invitationCode 邀请码
+     * @return 是否合法
+     */
+    public static boolean validInvitationCode(String invitationCode) {
+        String regex = "^[a-zA-Z\\d]{4,40}$";
+        return invitationCode.matches(regex);
+    }
 }

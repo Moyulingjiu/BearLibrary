@@ -40,7 +40,14 @@ public enum ReturnNo {
      */
     ILLEGAL_PASSWORD_USER_NAME(801, "错误的用户名或密码"),
     NEED_CHANGE_TOKEN(802, "需要更新token"),
-    SAME_PASSWORD(803, "新旧密码相同");
+    SAME_PASSWORD(803, "新旧密码相同"),
+
+    /**
+     * 其他错误
+     */
+    ILLEGAL_INVITATION_CODE(901, "不合法的邀请码格式"),
+    ILLEGAL_INVITATION_CODE_VALID_TIME(902, "不合法的邀请码有效期"),
+    SAME_INVITATION_CODE(903, "该邀请码已存在");
 
 
     private final int code;

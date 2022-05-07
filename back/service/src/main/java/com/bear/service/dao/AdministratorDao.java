@@ -69,7 +69,11 @@ public class AdministratorDao {
 
     public int insert(Administrator administrator) {
         AdministratorPo administratorPo = Common.cloneObject(administrator, AdministratorPo.class);
-        return administratorPoMapper.insert(administratorPo);
+        int insert = administratorPoMapper.insert(administratorPo);
+        if (insert > 0) {
+            redisUtils.deleteKey(RedisPrefix.ADMIN + administrator.getName());
+        }
+        return insert;
     }
 
     public int update(Administrator administrator) {
