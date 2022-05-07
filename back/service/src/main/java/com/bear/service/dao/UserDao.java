@@ -56,6 +56,7 @@ public class UserDao {
         criteria.andValidEqualTo(1);
         List<UserPo> userPos = userPoMapper.selectByExample(example);
         if (userPos.size() == 0) {
+            redisUtils.putObj(RedisPrefix.USER + name, null);
             return null;
         }
         // 写入redis
@@ -66,8 +67,18 @@ public class UserDao {
     }
 
     public int updateById(User user) {
+        User origin = selectById(user.getId());
         UserPo userPo = Common.cloneObject(user, UserPo.class);
-        return userPoMapper.updateByPrimaryKey(userPo);
+        int i = userPoMapper.updateByPrimaryKey(userPo);
+        if (i > 0) {
+            // 这里需要删除原来的用户名对应的缓存，可能用户名已经修改
+            redisUtils.deleteKey(RedisPrefix.USER + origin.getName());
+            redisUtils.deleteKey(RedisPrefix.USER + user.getId());
+            if (!origin.getName().equals(user.getName())) {
+                redisUtils.deleteKey(RedisPrefix.USER_NAME_EXIST + origin.getName());
+            }
+        }
+        return i;
     }
 
     public int insert(User user) {

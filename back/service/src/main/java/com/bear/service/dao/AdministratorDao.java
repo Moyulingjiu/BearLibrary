@@ -58,7 +58,8 @@ public class AdministratorDao {
         criteria.andValidEqualTo(1);
         List<AdministratorPo> administratorPos = administratorPoMapper.selectByExample(example);
         if (administratorPos.size() == 0) {
-            return  null;
+            redisUtils.putObj(RedisPrefix.ADMIN + name, null);
+            return null;
         }
         redisUtils.put(RedisPrefix.ADMIN_NAME_EXIST + name, "1");
         Administrator administrator = Common.cloneObject(administratorPos.get(0), Administrator.class);
@@ -72,11 +73,16 @@ public class AdministratorDao {
     }
 
     public int update(Administrator administrator) {
+        Administrator origin = selectById(administrator.getId());
         AdministratorPo administratorPo = Common.cloneObject(administrator, AdministratorPo.class);
         int i = administratorPoMapper.updateByPrimaryKey(administratorPo);
         if (i > 0) {
-            redisUtils.deleteKey(RedisPrefix.ADMIN + administrator.getName());
+            // 这里需要删除原来用户名的
+            redisUtils.deleteKey(RedisPrefix.ADMIN + origin.getName());
             redisUtils.deleteKey(RedisPrefix.ADMIN + administrator.getId());
+            if (!origin.getName().equals(administrator.getName())) {
+                redisUtils.deleteKey(RedisPrefix.ADMIN_NAME_EXIST + origin.getName());
+            }
         }
         return i;
     }

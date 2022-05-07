@@ -30,4 +30,14 @@ public class RedisPrefix {
      * 管理员数据
      */
     public static final String ADMIN = "admin_";
+
+    /**
+     * 邀请码数据
+     */
+    public static final String INVITATION_CODE = "invitation_code_";
+
+    /**
+     * 消息数据
+     */
+    public static final String MESSAGE = "message_";
 }
