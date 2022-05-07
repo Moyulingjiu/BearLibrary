@@ -323,15 +323,26 @@ token
 
 输入：
 
-```json
-{
-    "page":  "页面",
-    "pageSize": "页面大小",
-    "name": "用户名",
-    "valid": "是否没有被删除",
-    "beginTime": "创建时间下限",
-    "endTime": "创建时间上限"
-}
+```java
+page        页码
+pageSize    页面大小
+name        用户名
+valid       是否没有被删除
+gender      性别
+phone       电话
+nickname    昵称
+beginTime   创建时间下限
+endTime     创建时间上限
+minWalk     行走经验下限
+maxWalk     行走经验上限
+minRead     阅读经验下限
+maxRead     阅读经验上限
+minSport    运动经验下限
+maxSport    运动经验上限
+minArt      艺术经验下限
+maxArt      艺术经验上限
+minPractice 实践经验下限
+maxPractice 实践经验上限
 ```
 
 输出：
