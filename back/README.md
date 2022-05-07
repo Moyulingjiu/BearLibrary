@@ -4,4 +4,15 @@
 
 - common：通用工具类
 - service：服务类
-- gateway：网关
+
+
+
+## Service模块说明
+
+1. 用户（user）
+2. 管理员（administrator）
+3. 邀请码（invitation_code）
+4. 消息（message）
+5. 打卡（check）
+6. 贡献（contribution）
+7. 上传下载图片（picture）
