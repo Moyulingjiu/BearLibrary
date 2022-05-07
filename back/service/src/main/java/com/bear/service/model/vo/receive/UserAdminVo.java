@@ -1,5 +1,6 @@
 package com.bear.service.model.vo.receive;
 
+import com.bear.model.SimplePerson;
 import com.bear.service.model.bo.Gender;
 import com.bear.util.Common;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserVo {
+public class UserAdminVo {
     /**
      * 昵称（用于展示）
      */
@@ -39,7 +40,6 @@ public class UserVo {
     /**
      * 性别
      */
-    @Range(min = 0)
     private Integer gender;
 
     /**
@@ -47,4 +47,51 @@ public class UserVo {
      */
     private String phone;
 
+    /**
+     * 荣誉值
+     */
+    @Range(min = 0)
+    private Long honorPoint;
+
+    /**
+     * 自律值
+     */
+    @Range(min = 0)
+    private Long selfControlPoint;
+
+    /**
+     * 贡献值
+     */
+    @Range(min = 0)
+    private Long contributionPoint;
+
+    /**
+     * 行走的经验值
+     */
+    @Range(min = 0)
+    private Long walk;
+
+    /**
+     * 阅读的经验值
+     */
+    @Range(min = 0)
+    private Long read;
+
+    /**
+     * 运动的经验值
+     */
+    @Range(min = 0)
+    private Long sport;
+
+    /**
+     * 艺术的经验值
+     */
+    @Range(min = 0)
+    private Long art;
+
+    /**
+     * 实践的经验值
+     */
+    @Range(min = 0)
+    private Long practice;
 }

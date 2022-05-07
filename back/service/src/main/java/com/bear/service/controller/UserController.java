@@ -4,16 +4,9 @@ import com.bear.login.AdminLoginCheck;
 import com.bear.login.LoginId;
 import com.bear.login.LoginName;
 import com.bear.login.UserLoginCheck;
-import com.bear.service.model.vo.receive.PasswordChangeVo;
-import com.bear.service.model.vo.receive.UserLoginVo;
-import com.bear.service.model.vo.receive.UserRegisterVo;
-import com.bear.service.model.vo.receive.UserVo;
+import com.bear.service.model.vo.receive.*;
 import com.bear.service.service.UserService;
 import com.bear.util.Common;
-import com.bear.util.ResponseUtil;
-import com.bear.util.ReturnNo;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -82,6 +75,17 @@ public class UserController {
         return userService.changePassword(passwordChangeVo, id, name);
     }
 
+    @PostMapping("/user/{id}/password")
+    @AdminLoginCheck
+    public Object resetUserPassword(
+            @PathVariable Long id,
+            @Valid @RequestBody PasswordResetVo passwordResetVo,
+            @LoginId Long adminId,
+            @LoginName String adminName
+    ) {
+        return userService.resetPassword(id, passwordResetVo, adminId, adminName);
+    }
+
     @GetMapping("/administrator/user/{id}")
     @AdminLoginCheck
     public Object getByAdmin(
@@ -119,11 +123,22 @@ public class UserController {
     @PostMapping("/user/self")
     @UserLoginCheck
     public Object changeSelfUser(
-            @RequestBody UserVo userVo,
+            @Valid @RequestBody UserVo userVo,
             @LoginId Long userId,
             @LoginName String userName
     ) {
         return userService.changeUser(userVo, userId, userName);
+    }
+
+    @PostMapping("/user/{id}")
+    @AdminLoginCheck
+    public Object changeUser(
+            @PathVariable Long id,
+            @Valid @RequestBody UserAdminVo userAdminVo,
+            @LoginId Long adminId,
+            @LoginName String adminName
+    ) {
+        return userService.changeOtherUser(id, userAdminVo, adminId, adminName);
     }
 
     @DeleteMapping("/user/{id}")

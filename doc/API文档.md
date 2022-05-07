@@ -285,6 +285,26 @@ token
 
 
 
+### 【post】管理员重置用户密码：`/user/{id}/password`（管理员）
+
+输入：
+
+```json
+{
+    "password": "密码"
+}
+```
+
+输出：
+
+> 根据状态码来确定是否修改成功
+
+```json
+
+```
+
+
+
 ### 【get】管理员查询用户：`/administrator/user/{id}`（管理员）
 
 输入：
@@ -419,6 +439,40 @@ maxPractice 实践经验上限
 ```json
 
 ```
+
+
+
+### 【post】修改用户数据`/user/{id}`（管理员）
+
+输入：
+
+```json
+{
+    "nickname": "昵称",
+    "avatar": "头像",
+    "birthday": "2022-05-09T13:56:16.000",
+    "gender": 1,
+    "phone": "电话",
+    "honorPoint": 1, // 荣誉值
+    "selfControlPoint": 2, // 自律值
+    "contributionPoint": 3, // 贡献值
+    "walk": 1, // 行走的经验值
+    "read": 2, // 阅读的经验值
+    "sport": 3, // 体育的经验值
+    "art": 4, // 艺术的经验值
+    "practice": 5 // 实践的经验值
+}
+```
+
+输出：
+
+> 根据状态码来确定是否删除成功
+
+```json
+
+```
+
+
 
 
 

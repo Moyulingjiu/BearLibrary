@@ -9,10 +9,7 @@ import com.bear.service.dao.UserDao;
 import com.bear.service.model.bo.Gender;
 import com.bear.service.model.bo.InvitationCode;
 import com.bear.service.model.bo.User;
-import com.bear.service.model.vo.receive.PasswordChangeVo;
-import com.bear.service.model.vo.receive.UserLoginVo;
-import com.bear.service.model.vo.receive.UserRegisterVo;
-import com.bear.service.model.vo.receive.UserVo;
+import com.bear.service.model.vo.receive.*;
 import com.bear.service.model.vo.ret.UserOtherRetVo;
 import com.bear.service.model.vo.ret.UserRetVo;
 import com.bear.service.model.vo.ret.UserSimpleRetVo;
@@ -287,6 +284,33 @@ public class UserService {
     }
 
     /**
+     * 重置密码
+     *
+     * @param id 用户id
+     * @param passwordResetVo 密码
+     * @param adminId 管理员id
+     * @param adminName 管理员名称
+     * @return 状态
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Object resetPassword(Long id, PasswordResetVo passwordResetVo, Long adminId, String adminName) {
+        User user = userDao.selectById(id);
+        if (user == null || user.getValid() == 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        if (!StringUtils.validPassword(passwordResetVo.getPassword())) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_FORMAT);
+        }
+        user.setPassword(Aes.encrypt(passwordResetVo.getPassword(), Common.getPasswordSecret()));
+        Common.modifyObject(user, adminId, adminName);
+        int update = userDao.update(user);
+        if (update <= 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
+        }
+        return ResponseUtil.success();
+    }
+
+    /**
      * 改变用户信息
      *
      * @param userVo 用户信息
@@ -327,6 +351,80 @@ public class UserService {
         return ResponseUtil.success();
     }
 
+    /**
+     * 管理员修改其他用户信息
+     *
+     * @param id          用户id
+     * @param userAdminVo 用户信息
+     * @param adminId     管理员id
+     * @param adminName   管理员名
+     * @return 结果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Object changeOtherUser(Long id, UserAdminVo userAdminVo, Long adminId, String adminName) {
+        User user = userDao.selectById(id);
+        if (user == null || user.getValid() == 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        Common.modifyObject(user, adminId, adminName);
+        if (userAdminVo.getNickname() != null) {
+            user.setNickname(userAdminVo.getNickname());
+        }
+        if (userAdminVo.getAvatar() != null) {
+            user.setAvatar(userAdminVo.getAvatar());
+        }
+        if (userAdminVo.getBirthday() != null) {
+            DateTimeFormatter dfDateTime = DateTimeFormatter.ofPattern(Common.DATE_TIME_FORMAT);
+            user.setBirthday(dfDateTime.format(userAdminVo.getBirthday()));
+        }
+        if (userAdminVo.getPhone() != null) {
+            user.setPhone(userAdminVo.getPhone());
+        }
+        if (userAdminVo.getGender() != null) {
+            Gender[] values = Gender.values();
+            if (userAdminVo.getGender() >= 0 && userAdminVo.getGender() < values.length) {
+                user.setGender(values[userAdminVo.getGender()]);
+            }
+        }
+        if (userAdminVo.getHonorPoint() != null) {
+            user.setHonorPoint(userAdminVo.getHonorPoint());
+        }
+        if (userAdminVo.getSelfControlPoint() != null) {
+            user.setSelfControlPoint(userAdminVo.getSelfControlPoint());
+        }
+        if (userAdminVo.getContributionPoint() != null) {
+            user.setContributionPoint(userAdminVo.getContributionPoint());
+        }
+        if (userAdminVo.getWalk() != null) {
+            user.setWalk(userAdminVo.getWalk());
+        }
+        if (userAdminVo.getRead() != null) {
+            user.setRead(userAdminVo.getRead());
+        }
+        if (userAdminVo.getSport() != null) {
+            user.setSport(userAdminVo.getSport());
+        }
+        if (userAdminVo.getArt() != null) {
+            user.setArt(userAdminVo.getArt());
+        }
+        if (userAdminVo.getPractice() != null) {
+            user.setPractice(userAdminVo.getPractice());
+        }
+        int update = userDao.update(user);
+        if (update <= 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
+        }
+        return ResponseUtil.success();
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param id        用户id
+     * @param adminId   管理员id
+     * @param adminName 管理员名
+     * @return 结果
+     */
     @Transactional(rollbackFor = Exception.class)
     public Object delete(Long id, Long adminId, String adminName) {
         User user = userDao.selectById(id);
