@@ -2,8 +2,6 @@ package com.bear.service.dao;
 
 import com.bear.model.Page;
 import com.bear.service.mapper.UserPoMapper;
-import com.bear.service.model.bo.Administrator;
-import com.bear.service.model.bo.Gender;
 import com.bear.service.model.bo.User;
 import com.bear.service.model.po.UserPo;
 import com.bear.service.model.po.UserPoExample;

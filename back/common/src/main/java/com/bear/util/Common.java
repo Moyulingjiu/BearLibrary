@@ -28,6 +28,8 @@ public class Common {
     // todo: 生产环境需要修改
     /**
      * 系统初始化密码
+     * <p>
+     * 当系统没有root账户的时候，将会使用该账户密码初始化root账户
      */
     public static final String INIT_PASSWORD = "123456";
     /**
