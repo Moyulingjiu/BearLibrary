@@ -6,11 +6,13 @@ import com.bear.model.TokenType;
 import com.bear.service.dao.AdministratorDao;
 import com.bear.service.dao.InvitationCodeDao;
 import com.bear.service.dao.UserDao;
+import com.bear.service.model.bo.Gender;
 import com.bear.service.model.bo.InvitationCode;
 import com.bear.service.model.bo.User;
 import com.bear.service.model.vo.receive.PasswordChangeVo;
 import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
+import com.bear.service.model.vo.receive.UserVo;
 import com.bear.service.model.vo.ret.UserOtherRetVo;
 import com.bear.service.model.vo.ret.UserRetVo;
 import com.bear.service.model.vo.ret.UserSimpleRetVo;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,7 +159,7 @@ public class UserService {
     @Transactional(rollbackFor = Exception.class)
     public Object get(Long id) {
         User user = userDao.selectById(id);
-        if (user == null) {
+        if (user == null || user.getValid() == 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
         }
         UserRetVo userRetVo = Common.cloneObject(user, UserRetVo.class);
@@ -172,7 +175,7 @@ public class UserService {
     @Transactional(rollbackFor = Exception.class)
     public Object getOther(Long id) {
         User user = userDao.selectById(id);
-        if (user == null) {
+        if (user == null || user.getValid() == 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
         }
         UserOtherRetVo otherRetVo = Common.cloneObject(user, UserOtherRetVo.class);
@@ -261,7 +264,7 @@ public class UserService {
     @Transactional(rollbackFor = Exception.class)
     public Object changePassword(PasswordChangeVo passwordChangeVo, Long id, String name) {
         User user = getByName(name);
-        if (user == null) {
+        if (user == null || user.getValid() == 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
         }
         String password = Aes.decrypt(user.getPassword(), Common.getPasswordSecret());
@@ -276,6 +279,62 @@ public class UserService {
         }
         user.setPassword(Aes.encrypt(passwordChangeVo.getNewPassword(), Common.getPasswordSecret()));
         Common.modifyObject(user, id, name);
+        int update = userDao.update(user);
+        if (update <= 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
+        }
+        return ResponseUtil.success();
+    }
+
+    /**
+     * 改变用户信息
+     *
+     * @param userVo 用户信息
+     * @param id     id
+     * @param name   name
+     * @return 结果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Object changeUser(UserVo userVo, Long id, String name) {
+        User user = userDao.selectById(id);
+        if (user == null || user.getValid() == 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        Common.modifyObject(user, id, name);
+        if (userVo.getNickname() != null) {
+            user.setNickname(userVo.getNickname());
+        }
+        if (userVo.getAvatar() != null) {
+            user.setAvatar(userVo.getAvatar());
+        }
+        if (userVo.getBirthday() != null) {
+            DateTimeFormatter dfDateTime = DateTimeFormatter.ofPattern(Common.DATE_TIME_FORMAT);
+            user.setBirthday(dfDateTime.format(userVo.getBirthday()));
+        }
+        if (userVo.getPhone() != null) {
+            user.setPhone(userVo.getPhone());
+        }
+        if (userVo.getGender() != null) {
+            Gender[] values = Gender.values();
+            if (userVo.getGender() >= 0 && userVo.getGender() < values.length) {
+                user.setGender(values[userVo.getGender()]);
+            }
+        }
+        int update = userDao.update(user);
+        if (update <= 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
+        }
+        return ResponseUtil.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Object delete(Long id, Long adminId, String adminName) {
+        User user = userDao.selectById(id);
+        if (user == null || user.getValid() == 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        user.setValid(0);
+        Common.modifyObject(user, adminId, adminName);
         int update = userDao.update(user);
         if (update <= 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);

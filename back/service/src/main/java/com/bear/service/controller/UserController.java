@@ -7,6 +7,7 @@ import com.bear.login.UserLoginCheck;
 import com.bear.service.model.vo.receive.PasswordChangeVo;
 import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
+import com.bear.service.model.vo.receive.UserVo;
 import com.bear.service.service.UserService;
 import com.bear.util.Common;
 import com.bear.util.ResponseUtil;
@@ -113,5 +114,25 @@ public class UserController {
             @RequestParam(required = false) Long maxPractice
     ) {
         return userService.getAllByAdmin(page, pageSize, name, valid, gender, phone, nickname, beginTime, endTime, minWalk, maxWalk, minRead, maxRead, minSport, maxSport, minArt, maxArt, minPractice, maxPractice);
+    }
+
+    @PostMapping("/user/self")
+    @UserLoginCheck
+    public Object changeSelfUser(
+            @RequestBody UserVo userVo,
+            @LoginId Long userId,
+            @LoginName String userName
+    ) {
+        return userService.changeUser(userVo, userId, userName);
+    }
+
+    @DeleteMapping("/user/{id}")
+    @AdminLoginCheck
+    public Object deleteUser(
+            @PathVariable Long id,
+            @LoginId Long userId,
+            @LoginName String userName
+    ) {
+        return userService.delete(id, userId, userName);
     }
 }

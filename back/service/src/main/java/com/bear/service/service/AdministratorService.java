@@ -103,7 +103,7 @@ public class AdministratorService {
     @Transactional(rollbackFor = Exception.class)
     public Object changePassword(PasswordChangeVo passwordChangeVo, Long adminId, String adminName) {
         Administrator admin = getByName(adminName);
-        if (admin == null) {
+        if (admin == null || admin.getValid() == 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
         }
         String password = Aes.decrypt(admin.getPassword(), Common.getPasswordSecret());
