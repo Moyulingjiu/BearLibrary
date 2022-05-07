@@ -1,6 +1,9 @@
 package com.bear.service.dao;
 
+import com.bear.model.Page;
 import com.bear.service.mapper.UserPoMapper;
+import com.bear.service.model.bo.Administrator;
+import com.bear.service.model.bo.Gender;
 import com.bear.service.model.bo.User;
 import com.bear.service.model.po.UserPo;
 import com.bear.service.model.po.UserPoExample;
@@ -8,9 +11,13 @@ import com.bear.service.util.RedisUtils;
 import com.bear.service.util.StringUtils;
 import com.bear.util.Common;
 import com.bear.util.RedisPrefix;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,5 +98,89 @@ public class UserDao {
             redisUtils.deleteKey(RedisPrefix.USER + user.getName());
         }
         return insert;
+    }
+
+    public Page<User> selectAll(
+            Integer page,
+            Integer pageSize,
+            String name,
+            Integer valid,
+            Integer gender,
+            String phone,
+            String nickname,
+            LocalDateTime beginTime,
+            LocalDateTime endTime,
+            Long minWalk,
+            Long maxWalk,
+            Long minRead,
+            Long maxRead,
+            Long minSport,
+            Long maxSport,
+            Long minArt,
+            Long maxArt,
+            Long minPractice,
+            Long maxPractice
+    ) {
+        UserPoExample example = new UserPoExample();
+        UserPoExample.Criteria criteria = example.createCriteria();
+        if (name != null) {
+            criteria.andNameEqualTo(name);
+        }
+        if (valid != null) {
+            criteria.andValidEqualTo(valid);
+        }
+        if (gender != null) {
+            criteria.andGenderEqualTo(gender);
+        }
+        if (phone != null) {
+            criteria.andPhoneLike(phone);
+        }
+        if (nickname != null) {
+            criteria.andNicknameLike(nickname);
+        }
+        if (beginTime != null) {
+            criteria.andGmtCreateGreaterThanOrEqualTo(beginTime);
+        }
+        if (endTime != null) {
+            criteria.andGmtCreateLessThanOrEqualTo(endTime);
+        }
+        if (minWalk != null) {
+            criteria.andWalkGreaterThanOrEqualTo(minWalk);
+        }
+        if (maxWalk != null) {
+            criteria.andWalkLessThanOrEqualTo(maxWalk);
+        }
+        if (minRead != null) {
+            criteria.andReadGreaterThanOrEqualTo(minRead);
+        }
+        if (maxRead != null) {
+            criteria.andReadLessThanOrEqualTo(maxRead);
+        }
+        if (minSport != null) {
+            criteria.andSportGreaterThanOrEqualTo(minSport);
+        }
+        if (maxSport != null) {
+            criteria.andSportLessThanOrEqualTo(maxSport);
+        }
+        if (minArt != null) {
+            criteria.andArtGreaterThanOrEqualTo(minArt);
+        }
+        if (maxArt != null) {
+            criteria.andArtLessThanOrEqualTo(maxArt);
+        }
+        if (minPractice != null) {
+            criteria.andPracticeGreaterThanOrEqualTo(minPractice);
+        }
+        if (maxPractice != null) {
+            criteria.andPracticeLessThanOrEqualTo(maxPractice);
+        }
+        PageHelper.startPage(page, pageSize);
+        List<UserPo> userPos = userPoMapper.selectByExample(example);
+        PageInfo<UserPo> userPoPageInfo = new PageInfo<>(userPos);
+        ArrayList<User> users = new ArrayList<>();
+        for (UserPo userPo : userPos) {
+            users.add(Common.cloneObject(userPo, User.class));
+        }
+        return new Page<>(users, userPoPageInfo);
     }
 }

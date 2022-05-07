@@ -105,6 +105,26 @@
 >
 > 无标注表示不需要token
 
+> **注4：**
+>
+> 分页查询：
+>
+> ```json
+> {
+>     "page": 页码（从1开始）,
+>     "pageSize": 页面大小,
+>     "total": 总计多少页,
+>     "row": list有多少条数据,
+>     "hasPreviousPage": 是否有上一页,
+>     "hasNextPage": 是否有下一页,
+>     "list": [
+>         // 数据内容
+>     ]
+> }
+> ```
+>
+> 
+
 ## 实体介绍
 
 ### 用户类（user）
@@ -265,6 +285,112 @@ token
 
 
 
+### 【get】管理员查询用户：`/administrator/user/{id}`（管理员）
+
+输入：
+
+```json
+
+```
+
+输出：
+
+```json
+{
+    "id": 1,
+    "name": "bear",
+    "invitationCodeId": 1,
+    "nickname": "",
+    "avatar": "",
+    "birthday": "",
+    "gender": "UNKNOWN",
+    "phone": "",
+    "honorPoint": 0,
+    "selfControlPoint": 0,
+    "contributionPoint": 0,
+    "walk": 0,
+    "read": 0,
+    "sport": 0,
+    "art": 0,
+    "practice": 0,
+    "gmtCreate": "2022-05-06 13:56:16.000"
+}
+```
+
+
+
+### 【get】管理员分页条件查询用户：`/administrator/users`（管理员）
+
+输入：
+
+```json
+{
+    "page":  "页面",
+    "pageSize": "页面大小",
+    "name": "用户名",
+    "valid": "是否没有被删除",
+    "beginTime": "创建时间下限",
+    "endTime": "创建时间上限"
+}
+```
+
+输出：
+
+```json
+{
+    "page": 1,
+    "pageSize": 3,
+    "total": 2,
+    "row": 3,
+    "hasPreviousPage": false,
+    "hasNextPage": true,
+    "list": [
+        {
+            "id": 1,
+            "name": "bear",
+            "nickname": "",
+            "avatar": "",
+            "gender": "UNKNOWN",
+            "walk": 0,
+            "read": 0,
+            "sport": 0,
+            "art": 0,
+            "practice": 0,
+            "valid": 1,
+            "gmtCreate": "2022-05-06T13:56:16.000"
+        },
+        {
+            "id": 2,
+            "name": "bear2",
+            "nickname": "",
+            "avatar": "",
+            "gender": "UNKNOWN",
+            "walk": 0,
+            "read": 0,
+            "sport": 0,
+            "art": 0,
+            "practice": 0,
+            "valid": 1,
+            "gmtCreate": "2022-05-06T18:54:51.000"
+        },
+        {
+            "id": 3,
+            "name": "bear3",
+            "nickname": "",
+            "avatar": "",
+            "gender": "UNKNOWN",
+            "walk": 0,
+            "read": 0,
+            "sport": 0,
+            "art": 0,
+            "practice": 0,
+            "valid": 1,
+            "gmtCreate": "2022-05-07T16:41:13.000"
+        }
+    ]
+}
+```
+
 
 
 ## 管理员：`/administrator`
@@ -415,46 +541,44 @@ token
 
 ```json
 {
-    "msg": "成功",
-    "data": {
-        "page": 1,
-        "pageSize": 2,
-        "total": 2,
-        "list": [
-            {
-                "id": 1,
-                "name": "admin",
-                "valid": 1,
-                "gmtCreate": "2022-05-06T23:27:39",
-                "create": {
-                    "id": 0,
-                    "name": "system"
-                },
-                "gmtModified": "2022-05-06T23:27:39",
-                "modified": {
-                    "id": 0,
-                    "name": "system"
-                }
+    "page": 1,
+    "pageSize": 2,
+    "total": 2,
+    "row": 2,
+    "hasPreviousPage": true,
+    "hasNextPage": false,
+    "list": [
+        {
+            "id": 1,
+            "name": "admin",
+            "valid": 1,
+            "gmtCreate": "2022-05-06T23:27:39",
+            "create": {
+                "id": 0,
+                "name": "system"
             },
-            {
-                "id": 2,
-                "name": "admin2",
-                "valid": 1,
-                "gmtCreate": "2022-05-06T23:39:59",
-                "create": {
-                    "id": 0,
-                    "name": "system"
-                },
-                "gmtModified": "2022-05-07T13:46:34",
-                "modified": {
-                    "id": 2,
-                    "name": "admin2"
-                }
+            "gmtModified": "2022-05-06T23:27:39",
+            "modified": {
+                "id": 0,
+                "name": "system"
             }
-        ]
-    },
-    "status": 200,
-    "timestamp": "2022-05-07 14:24:57.137"
+        },
+        {
+            "id": 2,
+            "name": "admin2",
+            "valid": 1,
+            "gmtCreate": "2022-05-06T23:39:59",
+            "create": {
+                "id": 0,
+                "name": "system"
+            },
+            "gmtModified": "2022-05-07T13:46:34",
+            "modified": {
+                "id": 2,
+                "name": "admin2"
+            }
+        }
+    ]
 }
 ```
 

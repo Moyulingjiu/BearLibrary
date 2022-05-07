@@ -1,10 +1,12 @@
 package com.bear.service.dao;
 
+import com.bear.model.Page;
 import com.bear.service.mapper.AdministratorPoMapper;
 import com.bear.service.model.bo.Administrator;
 import com.bear.service.model.bo.User;
 import com.bear.service.model.po.AdministratorPo;
 import com.bear.service.model.po.AdministratorPoExample;
+import com.bear.service.model.po.UserPo;
 import com.bear.service.model.po.UserPoExample;
 import com.bear.service.util.RedisUtils;
 import com.bear.service.util.StringUtils;
@@ -97,7 +99,7 @@ public class AdministratorDao {
         return i;
     }
 
-    public PageInfo<Administrator> selectAll(Integer page, Integer pageSize, String name, Integer valid, LocalDateTime beginTime, LocalDateTime endTime) {
+    public Page<Administrator> selectAll(Integer page, Integer pageSize, String name, Integer valid, LocalDateTime beginTime, LocalDateTime endTime) {
         AdministratorPoExample example = new AdministratorPoExample();
         AdministratorPoExample.Criteria criteria = example.createCriteria();
         if (name != null) {
@@ -107,18 +109,19 @@ public class AdministratorDao {
             criteria.andValidEqualTo(valid);
         }
         if (beginTime != null) {
-            criteria.andGmtCreateGreaterThan(beginTime);
+            criteria.andGmtCreateGreaterThanOrEqualTo(beginTime);
         }
         if (endTime != null) {
-            criteria.andGmtCreateLessThan(endTime);
+            criteria.andGmtCreateLessThanOrEqualTo(endTime);
         }
         PageHelper.startPage(page, pageSize);
         List<AdministratorPo> administratorPos = administratorPoMapper.selectByExample(example);
+        PageInfo<AdministratorPo> administratorPoPageInfo = new PageInfo<>(administratorPos);
         ArrayList<Administrator> administrators = new ArrayList<>();
         for (AdministratorPo administratorPo : administratorPos) {
             Administrator administrator = Common.cloneObject(administratorPo, Administrator.class);
             administrators.add(administrator);
         }
-        return new PageInfo<>(administrators);
+        return new Page<>(administrators, administratorPoPageInfo);
     }
 }

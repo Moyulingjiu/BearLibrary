@@ -45,7 +45,7 @@ public class StringUtils {
      * @return 是否合法
      */
     public static boolean validInvitationCode(String invitationCode) {
-        String regex = "^[a-zA-Z\\d]{4,40}$";
+        String regex = "^[a-zA-Z][a-zA-Z\\d]{3,39}$";
         return invitationCode.matches(regex);
     }
 }

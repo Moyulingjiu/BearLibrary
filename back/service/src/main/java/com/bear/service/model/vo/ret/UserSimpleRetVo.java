@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRetVo {
+public class UserSimpleRetVo {
     /**
      * id号
      */
@@ -28,11 +28,6 @@ public class UserRetVo {
      * 用户名（登陆用）
      */
     private String name;
-
-    /**
-     * 邀请码id
-     */
-    private Long invitationCodeId;
 
     /**
      * 昵称（用于展示）
@@ -45,34 +40,9 @@ public class UserRetVo {
     private String avatar;
 
     /**
-     * 生日（是日期格式）
-     */
-    private String birthday;
-
-    /**
      * 性别
      */
     private Gender gender = Gender.UNKNOWN;
-
-    /**
-     * 电话
-     */
-    private String phone;
-
-    /**
-     * 荣誉值
-     */
-    private Long honorPoint = 0L;
-
-    /**
-     * 自律值
-     */
-    private Long selfControlPoint = 0L;
-
-    /**
-     * 贡献值
-     */
-    private Long contributionPoint = 0L;
 
     /**
      * 行走的经验值

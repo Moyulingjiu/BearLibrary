@@ -1,6 +1,7 @@
 package com.bear.service.service;
 
 import com.bear.encript.Aes;
+import com.bear.model.Page;
 import com.bear.model.TokenType;
 import com.bear.service.dao.AdministratorDao;
 import com.bear.service.dao.InvitationCodeDao;
@@ -12,6 +13,7 @@ import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
 import com.bear.service.model.vo.ret.UserOtherRetVo;
 import com.bear.service.model.vo.ret.UserRetVo;
+import com.bear.service.model.vo.ret.UserSimpleRetVo;
 import com.bear.service.util.RedisUtils;
 import com.bear.service.util.StringUtils;
 import com.bear.util.*;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户service层
@@ -173,6 +177,77 @@ public class UserService {
         }
         UserOtherRetVo otherRetVo = Common.cloneObject(user, UserOtherRetVo.class);
         return ResponseUtil.decorateReturnObject(ReturnNo.OK, otherRetVo);
+    }
+
+    /**
+     * 管理员查看用户数据
+     *
+     * @param id 用户id
+     * @return 用户数据
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Object getByAdmin(Long id) {
+        User user = userDao.selectById(id);
+        if (user == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        UserRetVo userRetVo = Common.cloneObject(user, UserRetVo.class);
+        return ResponseUtil.decorateReturnObject(ReturnNo.OK, userRetVo);
+    }
+
+    /**
+     * 管理员分页条件查询用户
+     *
+     * @param page        页码
+     * @param pageSize    页面大小
+     * @param name        用户名
+     * @param valid       是否没有被删除
+     * @param gender      性别
+     * @param phone       电话
+     * @param nickname    昵称
+     * @param beginTime   创建时间下限
+     * @param endTime     创建时间上限
+     * @param minWalk     行走经验下限
+     * @param maxWalk     行走经验上限
+     * @param minRead     阅读经验下限
+     * @param maxRead     阅读经验上限
+     * @param minSport    运动经验下限
+     * @param maxSport    运动经验上限
+     * @param minArt      艺术经验下限
+     * @param maxArt      艺术经验上限
+     * @param minPractice 实践经验下限
+     * @param maxPractice 实践经验上限
+     * @return 结果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Object getAllByAdmin(
+            Integer page,
+            Integer pageSize,
+            String name,
+            Integer valid,
+            Integer gender,
+            String phone,
+            String nickname,
+            LocalDateTime beginTime,
+            LocalDateTime endTime,
+            Long minWalk,
+            Long maxWalk,
+            Long minRead,
+            Long maxRead,
+            Long minSport,
+            Long maxSport,
+            Long minArt,
+            Long maxArt,
+            Long minPractice,
+            Long maxPractice
+    ) {
+        Page<User> userPage = userDao.selectAll(page, pageSize, name, valid, gender, phone, nickname, beginTime, endTime, minWalk, maxWalk, minRead, maxRead, minSport, maxSport, minArt, maxArt, minPractice, maxPractice);
+        List<User> userList = userPage.getList();
+        List<UserSimpleRetVo> userSimpleRetVoList = new ArrayList<>();
+        for (User user : userList) {
+            userSimpleRetVoList.add(Common.cloneObject(user, UserSimpleRetVo.class));
+        }
+        return ResponseUtil.decorateReturnObject(ReturnNo.OK, new Page<>(userSimpleRetVoList, userPage));
     }
 
     /**

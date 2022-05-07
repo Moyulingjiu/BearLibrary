@@ -203,13 +203,13 @@ public class AdministratorService {
      */
     @Transactional(rollbackFor = Exception.class)
     public Object getAll(Integer page, Integer pageSize, String name, Integer valid, LocalDateTime beginTime, LocalDateTime endTime) {
-        PageInfo<Administrator> administratorPageInfo = administratorDao.selectAll(page, pageSize, name, valid, beginTime, endTime);
-        List<Administrator> administrators = administratorPageInfo.getList();
+        Page<Administrator> administratorPage = administratorDao.selectAll(page, pageSize, name, valid, beginTime, endTime);
+        List<Administrator> administrators = administratorPage.getList();
         ArrayList<AdminRetVo> adminRetVos = new ArrayList<>();
         for (Administrator administrator : administrators) {
             AdminRetVo adminRetVo = Common.cloneObject(administrator, AdminRetVo.class);
             adminRetVos.add(adminRetVo);
         }
-        return ResponseUtil.decorateReturnObject(ReturnNo.OK, new Page<>(page, pageSize, administratorPageInfo.getTotal(), adminRetVos));
+        return ResponseUtil.decorateReturnObject(ReturnNo.OK, new Page<>(adminRetVos, administratorPage));
     }
 }
