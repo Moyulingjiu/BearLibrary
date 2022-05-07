@@ -284,3 +284,24 @@ token
 
 ```
 
+
+
+### 【post】修改密码：`/administrator/password`
+
+输入：
+
+```json
+{
+    "oldPassword": "原密码",
+    "newPassword": "新密码"
+}
+```
+
+输出：
+
+> 根据状态码来确定是否修改成功
+
+```json
+
+```
+

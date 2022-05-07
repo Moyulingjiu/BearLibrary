@@ -5,6 +5,7 @@ import com.bear.login.LoginId;
 import com.bear.login.LoginName;
 import com.bear.service.model.vo.receive.AdminCreateVo;
 import com.bear.service.model.vo.receive.AdminLoginVo;
+import com.bear.service.model.vo.receive.PasswordChangeVo;
 import com.bear.service.service.AdministratorService;
 import com.bear.util.ResponseUtil;
 import com.bear.util.ReturnNo;
@@ -48,5 +49,15 @@ public class AdministratorController {
             return ResponseUtil.decorateReturnObject(ReturnNo.FORBIDDEN);
         }
         return administratorService.create(adminCreateVo, adminId, adminName);
+    }
+
+    @PostMapping("/administrator/password")
+    @AdminLoginCheck
+    public Object changePassword(
+            @Valid @RequestBody PasswordChangeVo passwordChangeVo,
+            @LoginId Long adminId,
+            @LoginName String adminName
+    ) {
+        return administratorService.changePassword(passwordChangeVo, adminId, adminName);
     }
 }

@@ -75,13 +75,13 @@ public class RedisUtils {
     }
 
     /**
-     * 获取并且删除某个对象
+     * 删除某个对象
      *
      * @param key key
-     * @return 对象
+     * @return true/false
      */
-    public Object getAndDeleteObj(String key) {
-        return redisTemplate.opsForValue().getAndDelete(key);
+    public Boolean deleteKey(String key) {
+        return redisTemplate.delete(key);
     }
 
     /**

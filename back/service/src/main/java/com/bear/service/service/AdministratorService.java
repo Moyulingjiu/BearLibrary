@@ -7,6 +7,7 @@ import com.bear.service.dao.AdministratorDao;
 import com.bear.service.model.bo.Administrator;
 import com.bear.service.model.vo.receive.AdminCreateVo;
 import com.bear.service.model.vo.receive.AdminLoginVo;
+import com.bear.service.model.vo.receive.PasswordChangeVo;
 import com.bear.service.util.StringUtils;
 import com.bear.util.Common;
 import com.bear.util.JwtIssuer;
@@ -56,6 +57,7 @@ public class AdministratorService {
      * @param adminCreateVo 创建管理员
      * @return 是否成功
      */
+    @Transactional(rollbackFor = Exception.class)
     public Object create(AdminCreateVo adminCreateVo, Long id, String name) {
         if (administratorDao.existName(adminCreateVo.getName())) {
             return ResponseUtil.decorateReturnObject(ReturnNo.EXIST_USER_NAME);
@@ -76,5 +78,30 @@ public class AdministratorService {
             ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
         return ResponseUtil.decorateReturnObject(ReturnNo.CREATED);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Object changePassword(PasswordChangeVo passwordChangeVo, Long adminId, String adminName) {
+        Administrator admin = getByName(adminName);
+        if (admin == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        String password = Aes.decrypt(admin.getPassword(), Common.getPasswordSecret());
+        if (!passwordChangeVo.getOldPassword().equals(password)) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_USER_NAME);
+        }
+        if (!StringUtils.validPassword(passwordChangeVo.getNewPassword())) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_FORMAT);
+        }
+        if (passwordChangeVo.getNewPassword().equals(passwordChangeVo.getOldPassword())) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.SAME_PASSWORD);
+        }
+        admin.setPassword(Aes.encrypt(passwordChangeVo.getNewPassword(), Common.getPasswordSecret()));
+        Common.modifyObject(admin, adminId, adminName);
+        int update = administratorDao.update(admin);
+        if (update <= 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
+        }
+        return ResponseUtil.success();
     }
 }
