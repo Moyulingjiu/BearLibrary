@@ -712,3 +712,145 @@ token
 
 ```
 
+
+
+## 贡献：`/contribution`
+
+### 【put】添加贡献：`/contribution`（管理员）
+
+输入：
+
+```json
+{
+    "userId": 用户id,
+    "point": 点数,
+    "comment": "备注"
+}
+```
+
+输出：
+
+```json
+```
+
+
+
+### 【post】修改贡献的备注：`/contribution/{id}`（管理员）
+
+输入：
+
+```json
+{
+    "comment": "备注"
+}
+```
+
+输出：
+
+> 根据返回的状态码，来决定修改的结果
+
+```json
+```
+
+
+
+### 【get】根据id获取贡献：`/contribution/{id}`（管理员）
+
+输入：
+
+```json
+
+```
+
+输出：
+
+```json
+{
+    "id": 贡献id,
+    "administratorId": 管理员id,
+    "userId": 用户id,
+    "point": 贡献点数,
+    "comment": "贡献备注",
+    "gmtCreate": "创建人",
+    "create": {
+        "id": 创建id,
+        "name": "创建人"
+    }
+}
+```
+
+
+
+### 【get】根据条件分页查询贡献：`/contributions`（管理员）
+
+输入：
+
+```json
+page                页码
+pageSize            页面大小
+userId              用户id
+contributionAdminId 贡献管理员id
+comment             贡献评论
+minPoint            最小积分
+maxPoint            最大积分
+beginTime           开始时间
+endTime             结束时间
+```
+
+输出：
+
+```json
+{
+    "page": 1,
+    "pageSize": 10,
+    "total": 1,
+    "row": 2,
+    "hasPreviousPage": false,
+    "hasNextPage": false,
+    "list": [
+        {
+            "id": 1,
+            "administratorId": 1,
+            "userId": 1,
+            "point": 100,
+            "comment": "备注2",
+            "gmtCreate": "2022-05-07T19:26:45",
+            "create": {
+                "id": 1,
+                "name": "admin"
+            }
+        },
+        {
+            "id": 2,
+            "administratorId": 1,
+            "userId": 1,
+            "point": 99,
+            "comment": "这是贡献2",
+            "gmtCreate": "2022-05-07T19:43:53",
+            "create": {
+                "id": 1,
+                "name": "admin"
+            }
+        }
+    ]
+}
+```
+
+
+
+### 【post】确认贡献：`/contribution/{id}/check`（管理员）
+
+> 请注意，只有确认贡献只有才会发放贡献值，发放后无法撤回！
+
+输入：
+
+```json
+
+```
+
+输出：
+
+```json
+
+```
+

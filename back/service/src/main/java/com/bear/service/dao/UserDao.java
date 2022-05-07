@@ -131,10 +131,10 @@ public class UserDao {
             criteria.andGenderEqualTo(gender);
         }
         if (phone != null) {
-            criteria.andPhoneLike(phone);
+            criteria.andPhoneLike("%" + phone + "%");
         }
         if (nickname != null) {
-            criteria.andNicknameLike(nickname);
+            criteria.andNicknameLike("%" + nickname + "%");
         }
         if (beginTime != null) {
             criteria.andGmtCreateGreaterThanOrEqualTo(beginTime);

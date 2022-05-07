@@ -40,4 +40,14 @@ public class RedisPrefix {
      * 消息数据
      */
     public static final String MESSAGE = "message_";
+
+    /**
+     * 贡献
+     */
+    public static final String CONTRIBUTION = "contribution_";
+
+    /**
+     * 打卡
+     */
+    public static final String CHECK = "check";
 }

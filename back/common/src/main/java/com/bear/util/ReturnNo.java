@@ -44,11 +44,16 @@ public enum ReturnNo {
     SANE_USER_NAME(804, "相同的用户名"),
 
     /**
-     * 其他错误
+     * 邀请码错误
      */
     ILLEGAL_INVITATION_CODE(901, "不合法的邀请码格式"),
     ILLEGAL_INVITATION_CODE_VALID_TIME(902, "不合法的邀请码有效期"),
-    SAME_INVITATION_CODE(903, "该邀请码已存在");
+    SAME_INVITATION_CODE(903, "该邀请码已存在"),
+
+    /**
+     * 贡献值错误
+     */
+    ALREADY_CHECKED_CONTRIBUTION(1001, "已经验证过贡献值");
 
 
     private final int code;
