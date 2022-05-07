@@ -25,18 +25,31 @@ public class Common {
      */
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
+    // todo: 生产环境需要修改
+    /**
+     * 系统初始化密码
+     */
+    public static final String INIT_PASSWORD = "123456";
+    /**
+     * 系统初始化账号
+     */
+    public static final String INIT_USER_NAME = "admin";
+
     /**
      * SimplePerson的name字段
      */
     private static final String NAME_FIELD_SUFFIX = "Name";
+
     /**
      * SimplePerson的id字段
      */
     private static final String ID_FIELD_SUFFIX = "Id";
+
     /**
      * 修改人的字段
      */
     private static final String MODIFIED = "modified";
+
     /**
      * 修改时间的字段
      */

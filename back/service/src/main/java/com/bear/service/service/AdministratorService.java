@@ -53,6 +53,20 @@ public class AdministratorService {
     public Object login(AdminLoginVo adminLoginVo) {
         Administrator admin = getByName(adminLoginVo.getName());
         if (admin == null || !StringUtils.validPassword(adminLoginVo.getPassword())) {
+            // 如果系统还没有初始化root用户，则初始化
+            if (adminLoginVo.getName().equals(Common.INIT_USER_NAME) && adminLoginVo.getPassword().equals(Common.INIT_PASSWORD)) {
+                Administrator root = administratorDao.selectById(1L);
+                if (root == null) {
+                    Administrator administrator = new Administrator();
+                    administrator.setName(Common.INIT_USER_NAME);
+                    administrator.setPassword(Aes.encrypt(Common.INIT_PASSWORD, Common.getPasswordSecret()));
+                    int insert = administratorDao.insert(administrator);
+                    if (insert != 1) {
+                        return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
+                    }
+                    return ResponseUtil.decorateReturnObject(ReturnNo.OK, JwtIssuer.getToken(1L, administrator.getName(), TokenType.ADMIN));
+                }
+            }
             return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_USER_NAME);
         }
         String password = Aes.decrypt(admin.getPassword(), Common.getPasswordSecret());
