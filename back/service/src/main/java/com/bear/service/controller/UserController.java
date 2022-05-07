@@ -4,6 +4,7 @@ import com.bear.login.AdminLoginCheck;
 import com.bear.login.LoginId;
 import com.bear.login.LoginName;
 import com.bear.login.UserLoginCheck;
+import com.bear.service.model.vo.receive.PasswordChangeVo;
 import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
 import com.bear.service.service.UserService;
@@ -65,5 +66,13 @@ public class UserController {
         return userService.getOther(id);
     }
 
-
+    @PostMapping("/user/password")
+    @UserLoginCheck
+    public Object changePassword(
+            @Valid @RequestBody PasswordChangeVo passwordChangeVo,
+            @LoginId Long id,
+            @LoginName String name
+    ) {
+        return userService.changePassword(passwordChangeVo, id, name);
+    }
 }

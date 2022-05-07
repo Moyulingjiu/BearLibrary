@@ -41,9 +41,9 @@ public class AdministratorController {
     @PutMapping("/administrator")
     @AdminLoginCheck
     public Object create(
-        @Valid @RequestBody AdminCreateVo adminCreateVo,
-        @LoginId Long adminId,
-        @LoginName String adminName
+            @Valid @RequestBody AdminCreateVo adminCreateVo,
+            @LoginId Long adminId,
+            @LoginName String adminName
     ) {
         if (adminId != 1L) {
             return ResponseUtil.decorateReturnObject(ReturnNo.FORBIDDEN);

@@ -66,7 +66,7 @@ public class UserDao {
         return user;
     }
 
-    public int updateById(User user) {
+    public int update(User user) {
         User origin = selectById(user.getId());
         UserPo userPo = Common.cloneObject(user, UserPo.class);
         int i = userPoMapper.updateByPrimaryKey(userPo);

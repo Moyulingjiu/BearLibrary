@@ -244,6 +244,29 @@ token
 
 
 
+### 【post】修改密码：`/user/password`（用户）
+
+输入：
+
+```json
+{
+    "oldPassword": "原密码",
+    "newPassword": "新密码"
+}
+```
+
+输出：
+
+> 根据状态码来确定是否修改成功
+
+```json
+
+```
+
+
+
+
+
 ## 管理员：`/administrator`
 
 ### 【post】登陆：`/login`
@@ -265,7 +288,7 @@ token
 
 
 
-### 【put】创建管理员：`/administrator`
+### 【put】创建管理员：`/administrator`（管理员）
 
 输入：
 
@@ -286,7 +309,7 @@ token
 
 
 
-### 【post】修改密码：`/administrator/password`
+### 【post】修改密码：`/administrator/password`（管理员）
 
 输入：
 
@@ -300,6 +323,29 @@ token
 输出：
 
 > 根据状态码来确定是否修改成功
+
+```json
+
+```
+
+
+
+## 邀请码：`/invitation_code`
+
+### 【put】创建邀请码：`/invitation_code`（管理员）
+
+输入：
+
+```json
+{
+    "code": "邀请码",
+    "validTime": "2022-05-09 13:56:16.000" // 根据情况修改时间
+}
+```
+
+输出：
+
+> 根据状态码来确定是否创建成功
 
 ```json
 

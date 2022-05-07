@@ -6,6 +6,7 @@ import com.bear.service.dao.InvitationCodeDao;
 import com.bear.service.dao.UserDao;
 import com.bear.service.model.bo.InvitationCode;
 import com.bear.service.model.bo.User;
+import com.bear.service.model.vo.receive.PasswordChangeVo;
 import com.bear.service.model.vo.receive.UserLoginVo;
 import com.bear.service.model.vo.receive.UserRegisterVo;
 import com.bear.service.model.vo.ret.UserOtherRetVo;
@@ -167,5 +168,38 @@ public class UserService {
         }
         UserOtherRetVo otherRetVo = Common.cloneObject(user, UserOtherRetVo.class);
         return ResponseUtil.decorateReturnObject(ReturnNo.OK, otherRetVo);
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param passwordChangeVo 密码
+     * @param id               用户id
+     * @param name             用户名
+     * @return 状态
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Object changePassword(PasswordChangeVo passwordChangeVo, Long id, String name) {
+        User user = getByName(name);
+        if (user == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        String password = Aes.decrypt(user.getPassword(), Common.getPasswordSecret());
+        if (!passwordChangeVo.getOldPassword().equals(password)) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_USER_NAME);
+        }
+        if (!StringUtils.validPassword(passwordChangeVo.getNewPassword())) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_FORMAT);
+        }
+        if (passwordChangeVo.getNewPassword().equals(passwordChangeVo.getOldPassword())) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.SAME_PASSWORD);
+        }
+        user.setPassword(Aes.encrypt(passwordChangeVo.getNewPassword(), Common.getPasswordSecret()));
+        Common.modifyObject(user, id, name);
+        int update = userDao.update(user);
+        if (update <= 0) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
+        }
+        return ResponseUtil.success();
     }
 }
