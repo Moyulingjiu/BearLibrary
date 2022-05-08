@@ -3,6 +3,7 @@ package com.bear.service.model.vo.receive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 
@@ -17,5 +18,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class ContributionCommentVo {
     @NotBlank(message = "贡献备注不能为空")
+    @Length(max = 200, message = "贡献备注长度不能超过200")
     private String comment;
 }

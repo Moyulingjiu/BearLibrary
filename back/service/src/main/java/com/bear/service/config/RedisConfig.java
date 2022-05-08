@@ -32,8 +32,8 @@ public class RedisConfig {
     public CacheManager cacheManager(RedisConnectionFactory factory) {
         // 生成两套默认配置，通过 Config 对象即可对缓存进行自定义配置
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
-                // 设置过期时间 5 分钟
-                .entryTtl(Duration.ofMinutes(5))
+                // 设置过期时间 1 分钟
+                .entryTtl(Duration.ofMinutes(1))
                 // 禁止缓存 null 值
                 .disableCachingNullValues()
                 // 设置 key 序列化

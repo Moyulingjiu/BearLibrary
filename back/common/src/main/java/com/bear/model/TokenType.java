@@ -12,5 +12,10 @@ public enum TokenType {
     /**
      * 管理员token
      */
-    ADMIN
+    ADMIN,
+
+    /**
+     * 同时为管理员和用户
+     */
+    ALL
 }

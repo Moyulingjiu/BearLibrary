@@ -42,6 +42,10 @@ public class LoginAspect {
     public void adminLogin() {
     }
 
+    @Pointcut("@annotation(com.bear.login.LoginCheck)")
+    public void login() {
+    }
+
     @Around("userLogin()")
     public Object userTokenCheck(ProceedingJoinPoint joinPoint) {
         return checkToken(joinPoint, TokenType.USER);
@@ -50,6 +54,11 @@ public class LoginAspect {
     @Around("adminLogin()")
     public Object adminTokenCheck(ProceedingJoinPoint joinPoint) {
         return checkToken(joinPoint, TokenType.ADMIN);
+    }
+
+    @Around("login()")
+    public Object tokenCheck(ProceedingJoinPoint joinPoint) {
+        return checkToken(joinPoint, TokenType.ALL);
     }
 
     public Object checkToken(ProceedingJoinPoint joinPoint, TokenType tokenType) {
@@ -79,7 +88,7 @@ public class LoginAspect {
             } catch (NumberFormatException e) {
                 return ResponseUtil.badToken();
             }
-            if (type != tokenType.ordinal()) {
+            if (type != tokenType.ordinal() && tokenType != TokenType.ALL) {
                 return ResponseUtil.badToken();
             }
 

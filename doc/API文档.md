@@ -854,3 +854,225 @@ endTime             结束时间
 
 ```
 
+
+
+## 打卡：`/check`
+
+### 【put】创建打卡：`/check`（用户）
+
+输入：
+
+```json
+{
+    "type": 类别,
+    "url": "图片链接/base64",
+    "comment": "用户的说明"
+}
+```
+
+输出：
+
+> 根据状态码确定是否创建成功
+
+```json
+
+```
+
+
+
+### 【get】查询自己的打卡：`/check/{id}/self`（用户）
+
+输入：
+
+```json
+```
+
+输出：
+
+```json
+{
+    "id": 2,
+    "userId": 1,
+    "administratorId": null,
+    "type": "WALK",
+    "url": "测试url",
+    "point": 0,
+    "exp": 0,
+    "comment": null,
+    "gmtCreate": "2022-05-08T11:56:27",
+    "create": {
+        "id": 1,
+        "name": "bear"
+    }
+}
+```
+
+
+
+### 【get】查询打卡：`/check/{id}`（管理员）
+
+输入：
+
+```json
+
+```
+
+输出：
+
+```json
+{
+    "id": 2,
+    "userId": 1,
+    "administratorId": null,
+    "type": "WALK",
+    "url": "测试url",
+    "point": 0,
+    "exp": 0,
+    "comment": null,
+    "gmtCreate": "2022-05-08T11:56:27",
+    "create": {
+        "id": 1,
+        "name": "bear"
+    }
+}
+```
+
+
+
+### 【get】用户条件分页查询自己的打卡：`/checks/self`（用户）
+
+输入：
+
+```json
+page         页码
+pageSize     页大小
+adminId      管理员id
+type         打卡类型
+userComment  用户备注
+adminComment 管理员备注
+minPoint     最小积分
+maxPoint     最大积分
+minExp       最小经验
+maxExp       最大经验
+beginTime    开始时间
+endTime      结束时间
+```
+
+输出：
+
+```json
+{
+    "page": 1,
+    "pageSize": 10,
+    "total": 1,
+    "row": 2,
+    "hasPreviousPage": false,
+    "hasNextPage": false,
+    "list": [
+        {
+            "id": 1,
+            "userId": 1,
+            "administratorId": null,
+            "type": "WALK",
+            "url": "测试url",
+            "point": 0,
+            "exp": 0,
+            "adminComment": null,
+            "userComment": null,
+            "gmtCreate": "2022-05-08T11:48:21",
+            "create": {
+                "id": 1,
+                "name": "bear"
+            }
+        },
+        {
+            "id": 2,
+            "userId": 1,
+            "administratorId": null,
+            "type": "WALK",
+            "url": "测试url",
+            "point": 0,
+            "exp": 0,
+            "adminComment": null,
+            "userComment": "这是一个备注",
+            "gmtCreate": "2022-05-08T11:56:27",
+            "create": {
+                "id": 1,
+                "name": "bear"
+            }
+        }
+    ]
+}
+```
+
+
+
+### 【get】管理员条件分页查询打卡：`/checks`（管理员）
+
+输入：
+
+> 输入多了一个userId的限制项
+
+```json
+page         页码
+pageSize     页大小
+adminId      管理员id
+type         打卡类型
+userComment  用户备注
+adminComment 管理员备注
+minPoint     最小积分
+maxPoint     最大积分
+minExp       最小经验
+maxExp       最大经验
+beginTime    开始时间
+endTime      结束时间
+userId       用户id
+```
+
+输出：
+
+```json
+{
+    "page": 1,
+    "pageSize": 10,
+    "total": 1,
+    "row": 2,
+    "hasPreviousPage": false,
+    "hasNextPage": false,
+    "list": [
+        {
+            "id": 1,
+            "userId": 1,
+            "administratorId": null,
+            "type": "WALK",
+            "url": "测试url",
+            "point": 0,
+            "exp": 0,
+            "adminComment": null,
+            "userComment": null,
+            "gmtCreate": "2022-05-08T11:48:21",
+            "create": {
+                "id": 1,
+                "name": "bear"
+            }
+        },
+        {
+            "id": 2,
+            "userId": 1,
+            "administratorId": null,
+            "type": "WALK",
+            "url": "测试url",
+            "point": 0,
+            "exp": 0,
+            "adminComment": null,
+            "userComment": "这是一个备注",
+            "gmtCreate": "2022-05-08T11:56:27",
+            "create": {
+                "id": 1,
+                "name": "bear"
+            }
+        }
+    ]
+}
+```
+

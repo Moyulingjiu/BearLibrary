@@ -1,24 +1,23 @@
-package com.bear.service.model.bo;
+package com.bear.service.model.vo.ret;
 
 import com.bear.model.SimplePerson;
+import com.bear.service.model.bo.CheckType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 打卡类
+ * 打卡返回类
  *
  * @author moyulingjiu
- * create 2022年3月27日
+ * create 2022年5月7日
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Check implements Serializable {
-    private static final long serialVersionUID = -2867071904568397169L;
+public class CheckRetVo {
     /**
      * id号
      */
@@ -49,12 +48,12 @@ public class Check implements Serializable {
      * 对于学习进步目标，对应自律值
      * 其他对应荣誉值
      */
-    private Long point = 0L;
+    private Long point;
 
     /**
      * 得到的经验值
      */
-    private Long exp = 0L;
+    private Long exp;
 
     /**
      * 管理员备注信息
@@ -69,20 +68,10 @@ public class Check implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now();
+    private LocalDateTime gmtCreate;
 
     /**
      * 创建人
      */
     private SimplePerson create;
-
-    /**
-     * 修改时间
-     */
-    private LocalDateTime gmtModified = LocalDateTime.now();
-
-    /**
-     * 修改人
-     */
-    private SimplePerson modified;
 }
