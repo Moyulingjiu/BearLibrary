@@ -94,6 +94,7 @@ public class UserDao {
         if (insert > 0) {
             // 插入的时候要把null给删了，不然查缓存还是null。
             redisUtils.deleteKey(RedisPrefix.USER + user.getName());
+            redisUtils.deleteKey(RedisPrefix.USER + userPo.getId());
         }
         return insert;
     }

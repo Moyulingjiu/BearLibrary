@@ -75,6 +75,7 @@ public class InvitationCodeDao {
         int insert = invitationCodePoMapper.insert(invitationCodePo);
         if (insert > 0) {
             redisUtils.deleteKey(RedisPrefix.INVITATION_CODE + invitationCode.getCode());
+            redisUtils.deleteKey(RedisPrefix.INVITATION_CODE + invitationCodePo.getId());
         }
         return insert;
     }

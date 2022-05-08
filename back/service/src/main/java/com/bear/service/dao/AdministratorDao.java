@@ -3,11 +3,8 @@ package com.bear.service.dao;
 import com.bear.model.Page;
 import com.bear.service.mapper.AdministratorPoMapper;
 import com.bear.service.model.bo.Administrator;
-import com.bear.service.model.bo.User;
 import com.bear.service.model.po.AdministratorPo;
 import com.bear.service.model.po.AdministratorPoExample;
-import com.bear.service.model.po.UserPo;
-import com.bear.service.model.po.UserPoExample;
 import com.bear.service.util.RedisUtils;
 import com.bear.service.util.StringUtils;
 import com.bear.util.Common;
@@ -78,6 +75,7 @@ public class AdministratorDao {
         int insert = administratorPoMapper.insert(administratorPo);
         if (insert > 0) {
             redisUtils.deleteKey(RedisPrefix.ADMIN + administrator.getName());
+            redisUtils.deleteKey(RedisPrefix.ADMIN + administratorPo.getId());
         }
         return insert;
     }
