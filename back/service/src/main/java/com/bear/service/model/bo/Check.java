@@ -35,6 +35,11 @@ public class Check implements Serializable {
     private Long administratorId;
 
     /**
+     * 打卡状态
+     */
+    private CheckStatus status;
+
+    /**
      * 打卡的类别
      */
     private CheckType type;

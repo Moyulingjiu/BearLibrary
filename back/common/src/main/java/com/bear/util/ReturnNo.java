@@ -53,7 +53,12 @@ public enum ReturnNo {
     /**
      * 贡献值错误
      */
-    ALREADY_CHECKED_CONTRIBUTION(1001, "已经验证过贡献值");
+    ALREADY_CHECKED_CONTRIBUTION(1001, "已经验证过贡献值"),
+
+    /**
+     * 打卡错误
+     */
+    ALREADY_CHECKED_PUNCH(1101, "已经审核过打卡");
 
 
     private final int code;

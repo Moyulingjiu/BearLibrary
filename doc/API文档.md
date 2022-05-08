@@ -982,6 +982,7 @@ endTime             结束时间
     "id": 2,
     "userId": 1,
     "administratorId": null,
+    "status": "WAITING",
     "type": "WALK",
     "url": "测试url",
     "point": 0,
@@ -1005,7 +1006,8 @@ endTime             结束时间
 page         页码
 pageSize     页大小
 adminId      管理员id
-type         打卡类型
+status       状态
+type         打卡类型（0：通过，1：未通过，2：待审核）
 userComment  用户备注
 adminComment 管理员备注
 minPoint     最小积分
@@ -1031,6 +1033,7 @@ endTime      结束时间
             "id": 1,
             "userId": 1,
             "administratorId": null,
+            "status": "WAITING",
             "type": "WALK",
             "url": "测试url",
             "point": 0,
@@ -1047,6 +1050,7 @@ endTime      结束时间
             "id": 2,
             "userId": 1,
             "administratorId": null,
+            "status": "WAITING",
             "type": "WALK",
             "url": "测试url",
             "point": 0,
@@ -1075,6 +1079,7 @@ endTime      结束时间
 page         页码
 pageSize     页大小
 adminId      管理员id
+status       状态
 type         打卡类型
 userComment  用户备注
 adminComment 管理员备注
@@ -1101,7 +1106,8 @@ userId       用户id
         {
             "id": 1,
             "userId": 1,
-            "administratorId": null,
+            "administratorId": null
+            "status": "WAITING",
             "type": "WALK",
             "url": "测试url",
             "point": 0,
@@ -1118,6 +1124,7 @@ userId       用户id
             "id": 2,
             "userId": 1,
             "administratorId": null,
+            "status": "WAITING",
             "type": "WALK",
             "url": "测试url",
             "point": 0,
@@ -1132,5 +1139,27 @@ userId       用户id
         }
     ]
 }
+```
+
+
+
+### 【post】管理员通过打卡：`/check/{id}/check`（管理员）
+
+输入：
+
+```json
+{
+    "point": 1,
+    "exp": 10,
+    "pass": true,
+    "comment": "测试通过"
+}
+```
+
+输出：
+
+> 根据状态码确定是否成功
+
+```json
 ```
 

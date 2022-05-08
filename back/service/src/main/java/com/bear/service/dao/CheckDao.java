@@ -53,7 +53,7 @@ public class CheckDao {
         return checkPoMapper.insert(checkPo);
     }
 
-    public Page<Check> selectAll(Integer page, Integer pageSize, Long userId, Long adminId, Integer type, String userComment, String adminComment, Long minPoint, Long maxPoint, Long minExp, Long maxExp, LocalDateTime beginTime, LocalDateTime endTime) {
+    public Page<Check> selectAll(Integer page, Integer pageSize, Long userId, Long adminId, Byte status, Integer type, String userComment, String adminComment, Long minPoint, Long maxPoint, Long minExp, Long maxExp, LocalDateTime beginTime, LocalDateTime endTime) {
         CheckPoExample example = new CheckPoExample();
         CheckPoExample.Criteria criteria = example.createCriteria();
         if (userId != null) {
@@ -61,6 +61,9 @@ public class CheckDao {
         }
         if (adminId != null) {
             criteria.andAdministratorIdEqualTo(adminId);
+        }
+        if (status != null) {
+            criteria.andStatusEqualTo(status);
         }
         if (type != null) {
             criteria.andTypeEqualTo(type);

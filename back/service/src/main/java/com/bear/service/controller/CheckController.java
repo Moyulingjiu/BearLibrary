@@ -1,9 +1,11 @@
 package com.bear.service.controller;
 
 import com.bear.login.*;
+import com.bear.service.model.vo.receive.CheckAdminVo;
 import com.bear.service.model.vo.receive.CheckVo;
 import com.bear.service.service.CheckService;
 import com.bear.util.Common;
+import io.lettuce.core.StrAlgoArgs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +56,17 @@ public class CheckController {
         return checkService.get(id);
     }
 
+    @PostMapping("/check/{id}/check")
+    @AdminLoginCheck
+    public Object update(
+            @PathVariable Long id,
+            @Valid @RequestBody CheckAdminVo checkAdminVo,
+            @LoginId Long adminId,
+            @LoginName String adminName
+    ) {
+        return checkService.check(id, checkAdminVo, adminId, adminName);
+    }
+
     @GetMapping("/checks/self")
     @UserLoginCheck
     public Object getSelfAll(
@@ -63,6 +76,7 @@ public class CheckController {
             @RequestParam(required = false) Integer type,
             @RequestParam(required = false) String userComment,
             @RequestParam(required = false) String adminComment,
+            @RequestParam(required = false) Byte status,
             @RequestParam(required = false) Long minPoint,
             @RequestParam(required = false) Long maxPoint,
             @RequestParam(required = false) Long minExp,
@@ -71,7 +85,7 @@ public class CheckController {
             @DateTimeFormat(pattern = Common.DATE_TIME_FORMAT) @RequestParam(required = false) LocalDateTime endTime,
             @LoginId Long userId
     ) {
-        return checkService.getAll(page, pageSize, adminId, type, userComment, adminComment, minPoint, maxPoint, minExp, maxExp, beginTime, endTime, userId);
+        return checkService.getAll(page, pageSize, adminId, status, type, userComment, adminComment, minPoint, maxPoint, minExp, maxExp, beginTime, endTime, userId);
     }
 
     @GetMapping("/checks")
@@ -81,6 +95,7 @@ public class CheckController {
             @RequestParam Integer pageSize,
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Long adminId,
+            @RequestParam(required = false) Byte status,
             @RequestParam(required = false) Integer type,
             @RequestParam(required = false) String userComment,
             @RequestParam(required = false) String adminComment,
@@ -91,6 +106,6 @@ public class CheckController {
             @DateTimeFormat(pattern = Common.DATE_TIME_FORMAT) @RequestParam(required = false) LocalDateTime beginTime,
             @DateTimeFormat(pattern = Common.DATE_TIME_FORMAT) @RequestParam(required = false) LocalDateTime endTime
     ) {
-        return checkService.getAll(page, pageSize, adminId, type, userComment, adminComment, minPoint, maxPoint, minExp, maxExp, beginTime, endTime, userId);
+        return checkService.getAll(page, pageSize, adminId, status, type, userComment, adminComment, minPoint, maxPoint, minExp, maxExp, beginTime, endTime, userId);
     }
 }

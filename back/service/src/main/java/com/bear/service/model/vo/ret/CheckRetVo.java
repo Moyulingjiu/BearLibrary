@@ -1,6 +1,7 @@
 package com.bear.service.model.vo.ret;
 
 import com.bear.model.SimplePerson;
+import com.bear.service.model.bo.CheckStatus;
 import com.bear.service.model.bo.CheckType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,11 @@ public class CheckRetVo {
      * 审核的管理员id
      */
     private Long administratorId;
+
+    /**
+     * 打卡状态
+     */
+    private CheckStatus status;
 
     /**
      * 打卡的类别

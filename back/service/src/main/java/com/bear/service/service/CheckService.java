@@ -3,8 +3,12 @@ package com.bear.service.service;
 import com.bear.model.Page;
 import com.bear.model.SimplePerson;
 import com.bear.service.dao.CheckDao;
+import com.bear.service.dao.UserDao;
 import com.bear.service.model.bo.Check;
+import com.bear.service.model.bo.CheckStatus;
 import com.bear.service.model.bo.CheckType;
+import com.bear.service.model.bo.User;
+import com.bear.service.model.vo.receive.CheckAdminVo;
 import com.bear.service.model.vo.receive.CheckVo;
 import com.bear.service.model.vo.ret.CheckRetVo;
 import com.bear.util.Common;
@@ -12,6 +16,7 @@ import com.bear.util.ResponseUtil;
 import com.bear.util.ReturnNo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,6 +31,8 @@ import java.util.ArrayList;
 public class CheckService {
     @Autowired
     private CheckDao checkDao;
+    @Autowired
+    private UserDao userDao;
 
     /**
      * 创建打卡
@@ -35,6 +42,7 @@ public class CheckService {
      * @param userName 用户名
      * @return 打卡信息
      */
+    @Transactional(rollbackFor = Exception.class)
     public Object create(CheckVo checkVo, Long userId, String userName) {
         Check check = new Check();
         check.setUserId(userId);
@@ -62,6 +70,7 @@ public class CheckService {
      * @param id 打卡id
      * @return 打卡信息
      */
+    @Transactional(rollbackFor = Exception.class)
     public Object get(Long id) {
         Check check = checkDao.selectById(id);
         if (check == null) {
@@ -76,6 +85,7 @@ public class CheckService {
      * @param id 打卡id
      * @return 打卡信息
      */
+    @Transactional(rollbackFor = Exception.class)
     public Object getSelf(Long id, Long userId) {
         Check check = checkDao.selectById(id);
         if (check == null) {
@@ -105,13 +115,86 @@ public class CheckService {
      * @param userId       用户id
      * @return 打卡信息
      */
-    public Object getAll(Integer page, Integer pageSize, Long adminId, Integer type, String userComment, String adminComment, Long minPoint, Long maxPoint, Long minExp, Long maxExp, LocalDateTime beginTime, LocalDateTime endTime, Long userId) {
-        Page<Check> checkPage = checkDao.selectAll(page, pageSize, userId, adminId, type, userComment, adminComment, minPoint, maxPoint, minExp, maxExp, beginTime, endTime);
+    @Transactional(rollbackFor = Exception.class)
+    public Object getAll(Integer page, Integer pageSize, Long adminId, Byte status, Integer type, String userComment, String adminComment, Long minPoint, Long maxPoint, Long minExp, Long maxExp, LocalDateTime beginTime, LocalDateTime endTime, Long userId) {
+        Page<Check> checkPage = checkDao.selectAll(page, pageSize, userId, adminId, status, type, userComment, adminComment, minPoint, maxPoint, minExp, maxExp, beginTime, endTime);
         ArrayList<CheckRetVo> checkRetVos = new ArrayList<>();
         for (Check check : checkPage.getList()) {
             CheckRetVo checkRetVo = Common.cloneObject(check, CheckRetVo.class);
             checkRetVos.add(checkRetVo);
         }
         return ResponseUtil.decorateReturnObject(ReturnNo.OK, new Page<>(checkRetVos, checkPage));
+    }
+
+    /**
+     * 管理员审核打卡
+     *
+     * @param id           打卡id
+     * @param checkAdminVo 打卡审核信息
+     * @param adminId      管理员id
+     * @param adminName    管理员名称
+     * @return 打卡审核信息
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Object check(Long id, CheckAdminVo checkAdminVo, Long adminId, String adminName) {
+        Check check = checkDao.selectById(id);
+        if (check == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        if (check.getStatus() != CheckStatus.WAITING) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.ALREADY_CHECKED_PUNCH);
+        }
+        Common.modifyObject(check, adminId, adminName);
+        check.setAdminComment(checkAdminVo.getComment());
+        check.setExp(checkAdminVo.getExp());
+        check.setPoint(checkAdminVo.getPoint());
+        if (checkAdminVo.getPass()) {
+            check.setStatus(CheckStatus.PASS);
+        } else {
+            check.setStatus(CheckStatus.REJECT);
+        }
+        check.setAdministratorId(adminId);
+        int update = checkDao.update(check);
+        if (update > 0) {
+            if (check.getStatus() == CheckStatus.PASS) {
+                User user = userDao.selectById(check.getUserId());
+                if (user == null) {
+                    throw new RuntimeException("无法更新经验值与积分");
+                }
+                switch (check.getType()) {
+                    case WALK:
+                        user.setHonorPoint(user.getHonorPoint() + check.getPoint());
+                        user.setWalk(user.getWalk() + check.getExp());
+                        break;
+                    case READ:
+                        user.setHonorPoint(user.getHonorPoint() + check.getPoint());
+                        user.setRead(user.getRead() + check.getExp());
+                        break;
+                    case SPORT:
+                        user.setHonorPoint(user.getHonorPoint() + check.getPoint());
+                        user.setSport(user.getSport() + check.getExp());
+                        break;
+                    case ART:
+                        user.setHonorPoint(user.getHonorPoint() + check.getPoint());
+                        user.setArt(user.getArt() + check.getExp());
+                        break;
+                    case PRACTICE:
+                        user.setHonorPoint(user.getHonorPoint() + check.getPoint());
+                        user.setPractice(user.getPractice() + check.getExp());
+                        break;
+                    case STUDY_ADVANCE:
+                        user.setSelfControlPoint(user.getSelfControlPoint() + check.getPoint());
+                        break;
+                    default:
+                }
+                int i = userDao.update(user);
+                if (i <= 0) {
+                    throw new RuntimeException("无法更新经验值与积分");
+                }
+            }
+        } else {
+            return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
+        }
+        return ResponseUtil.success();
     }
 }
