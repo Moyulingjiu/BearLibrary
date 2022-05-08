@@ -85,4 +85,20 @@ public class ContributionController {
     ) {
         return contributionService.selectAll(page, pageSize, userId, contributionAdminId, comment, minPoint, maxPoint, beginTime, endTime);
     }
+
+    @GetMapping("/contributions/self")
+    @UserLoginCheck
+    public Object selectSelfAll(
+            @RequestParam Integer page,
+            @RequestParam Integer pageSize,
+            @RequestParam(required = false) Long contributionAdminId,
+            @RequestParam(required = false) String comment,
+            @RequestParam(required = false) Long minPoint,
+            @RequestParam(required = false) Long maxPoint,
+            @DateTimeFormat(pattern = Common.DATE_TIME_FORMAT) @RequestParam(required = false) LocalDateTime beginTime,
+            @DateTimeFormat(pattern = Common.DATE_TIME_FORMAT) @RequestParam(required = false) LocalDateTime endTime,
+            @LoginId Long userId
+    ) {
+        return contributionService.selectAll(page, pageSize, userId, contributionAdminId, comment, minPoint, maxPoint, beginTime, endTime);
+    }
 }
