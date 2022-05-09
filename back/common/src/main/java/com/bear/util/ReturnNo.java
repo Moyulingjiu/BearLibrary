@@ -41,7 +41,7 @@ public enum ReturnNo {
     ILLEGAL_PASSWORD_USER_NAME(801, "错误的用户名或密码"),
     NEED_CHANGE_TOKEN(802, "需要更新token"),
     SAME_PASSWORD(803, "新旧密码相同"),
-    SANE_USER_NAME(804, "相同的用户名"),
+    SAME_USER_NAME(804, "相同的用户名"),
 
     /**
      * 邀请码错误

@@ -151,7 +151,7 @@ public class AdministratorService {
     public Object changeName(NameChangeVo name, Long adminId, String adminName) {
         Administrator administrator = administratorDao.selectById(adminId);
         if (name.getName().equals(administrator.getName())) {
-            return ResponseUtil.decorateReturnObject(ReturnNo.SANE_USER_NAME);
+            return ResponseUtil.decorateReturnObject(ReturnNo.SAME_USER_NAME);
         }
         if (administratorDao.existName(name.getName()) || userDao.existName(name.getName())) {
             return ResponseUtil.decorateReturnObject(ReturnNo.EXIST_USER_NAME);
