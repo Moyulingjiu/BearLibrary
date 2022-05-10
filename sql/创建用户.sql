@@ -1,0 +1,3 @@
+CREATE USER 'bear'@'%' IDENTIFIED BY '123456';
+FLUSH PRIVILEGES;
+GRANT ALL ON bear.* TO 'bear'@'%';
