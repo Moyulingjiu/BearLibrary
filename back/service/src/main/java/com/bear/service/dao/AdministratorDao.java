@@ -70,14 +70,15 @@ public class AdministratorDao {
         return administrator;
     }
 
-    public int insert(Administrator administrator) {
+    public long insert(Administrator administrator) {
         AdministratorPo administratorPo = Common.cloneObject(administrator, AdministratorPo.class);
         int insert = administratorPoMapper.insert(administratorPo);
-        if (insert > 0) {
-            redisUtils.deleteKey(RedisPrefix.ADMIN + administrator.getName());
-            redisUtils.deleteKey(RedisPrefix.ADMIN + administratorPo.getId());
+        if (insert == 0 || administratorPo.getId() == null) {
+            return 0L;
         }
-        return insert;
+        redisUtils.deleteKey(RedisPrefix.ADMIN + administrator.getName());
+        redisUtils.deleteKey(RedisPrefix.ADMIN + administratorPo.getId());
+        return administratorPo.getId();
     }
 
     public int update(Administrator administrator) {

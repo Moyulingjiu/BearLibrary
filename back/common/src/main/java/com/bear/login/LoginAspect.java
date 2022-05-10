@@ -96,8 +96,11 @@ public class LoginAspect {
             Date issuedAt = JWT.decode(token).getIssuedAt();
 
             // 如果token过期了，或者签发时间甚至是未来，那么该token有问题
-            if (issuedAt.after(new Date()) || expiresAt.before(new Date())) {
+            if (issuedAt.after(new Date())) {
                 return ResponseUtil.badToken();
+            }
+            if (expiresAt.before(new Date())) {
+                return ResponseUtil.decorateReturnObject(ReturnNo.EXPIRE_TOKEN);
             }
             // 如果有效期不足十分钟（返回新的token给前端）
             if (System.currentTimeMillis() + JwtIssuer.WILL_EXPIRE_TIME > expiresAt.getTime()) {

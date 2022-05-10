@@ -60,8 +60,8 @@ public class AdministratorService {
                     Administrator administrator = new Administrator();
                     administrator.setName(Common.INIT_USER_NAME);
                     administrator.setPassword(Aes.encrypt(Common.INIT_PASSWORD, Common.getPasswordSecret()));
-                    int insert = administratorDao.insert(administrator);
-                    if (insert != 1) {
+                    long insert = administratorDao.insert(administrator);
+                    if (insert == 0) {
                         return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
                     }
                     return ResponseUtil.decorateReturnObject(ReturnNo.OK, JwtIssuer.getToken(1L, administrator.getName(), TokenType.ADMIN));
@@ -99,11 +99,11 @@ public class AdministratorService {
         administrator.setPassword(Aes.encrypt(administrator.getPassword(), Common.getPasswordSecret()));
         administrator.setCreate(new SimplePerson(id, name));
         administrator.setModified(new SimplePerson(id, name));
-        int insert = administratorDao.insert(administrator);
+        long insert = administratorDao.insert(administrator);
         if (insert <= 0) {
             ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
-        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED);
+        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED, insert);
     }
 
     /**

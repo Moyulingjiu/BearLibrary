@@ -50,10 +50,10 @@ public class InvitationCodeService {
         if (origin != null) {
             return ResponseUtil.decorateReturnObject(ReturnNo.SAME_INVITATION_CODE);
         }
-        int insert = invitationCodeDao.insert(invitationCode);
+        long insert = invitationCodeDao.insert(invitationCode);
         if (insert <= 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
-        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED);
+        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED, insert);
     }
 }

@@ -70,13 +70,14 @@ public class InvitationCodeDao {
         return i;
     }
 
-    public int insert(InvitationCode invitationCode) {
+    public long insert(InvitationCode invitationCode) {
         InvitationCodePo invitationCodePo = Common.cloneObject(invitationCode, InvitationCodePo.class);
         int insert = invitationCodePoMapper.insert(invitationCodePo);
-        if (insert > 0) {
-            redisUtils.deleteKey(RedisPrefix.INVITATION_CODE + invitationCode.getCode());
-            redisUtils.deleteKey(RedisPrefix.INVITATION_CODE + invitationCodePo.getId());
+        if (insert == 0 || invitationCodePo.getId() == null) {
+            return 0L;
         }
-        return insert;
+        redisUtils.deleteKey(RedisPrefix.INVITATION_CODE + invitationCode.getCode());
+        redisUtils.deleteKey(RedisPrefix.INVITATION_CODE + invitationCodePo.getId());
+        return invitationCodePo.getId();
     }
 }

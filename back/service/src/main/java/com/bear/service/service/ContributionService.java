@@ -47,11 +47,11 @@ public class ContributionService {
         Contribution contribution = Common.cloneObject(contributionVo, Contribution.class);
         contribution.setCreate(new SimplePerson(adminId, adminName));
         Common.modifyObject(contribution, adminId, adminName);
-        int insert = contributionDao.insert(contribution);
+        long insert = contributionDao.insert(contribution);
         if (insert <= 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
-        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED);
+        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED, insert);
     }
 
     /**

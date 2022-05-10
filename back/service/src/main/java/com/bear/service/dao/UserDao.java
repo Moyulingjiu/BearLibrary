@@ -88,15 +88,16 @@ public class UserDao {
         return i;
     }
 
-    public int insert(User user) {
+    public long insert(User user) {
         UserPo userPo = Common.cloneObject(user, UserPo.class);
         int insert = userPoMapper.insert(userPo);
-        if (insert > 0) {
-            // 插入的时候要把null给删了，不然查缓存还是null。
-            redisUtils.deleteKey(RedisPrefix.USER + user.getName());
-            redisUtils.deleteKey(RedisPrefix.USER + userPo.getId());
+        if (insert == 0 || user.getId() == null) {
+            return 0L;
         }
-        return insert;
+        // 插入的时候要把null给删了，不然查缓存还是null。
+        redisUtils.deleteKey(RedisPrefix.USER + user.getName());
+        redisUtils.deleteKey(RedisPrefix.USER + userPo.getId());
+        return userPo.getId();
     }
 
     public Page<User> selectAll(

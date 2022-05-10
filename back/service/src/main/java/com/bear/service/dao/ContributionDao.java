@@ -48,11 +48,14 @@ public class ContributionDao {
         return i;
     }
 
-    public int insert(Contribution contribution) {
+    public long insert(Contribution contribution) {
         ContributionPo contributionPo = Common.cloneObject(contribution, ContributionPo.class);
         int insert = contributionPoMapper.insert(contributionPo);
+        if (insert == 0 || contributionPo.getId() == null) {
+            return 0L;
+        }
         redisUtils.deleteKey(RedisPrefix.CONTRIBUTION + contributionPo.getId());
-        return insert;
+        return contributionPo.getId();
     }
 
     public int delete(Long id) {

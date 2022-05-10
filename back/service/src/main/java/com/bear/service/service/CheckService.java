@@ -58,11 +58,11 @@ public class CheckService {
         check.setCreate(new SimplePerson(userId, userName));
         Common.modifyObject(check, userId, userName);
         System.out.println(check);
-        int insert = checkDao.insert(check);
+        long insert = checkDao.insert(check);
         if (insert <= 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
-        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED);
+        return ResponseUtil.decorateReturnObject(ReturnNo.CREATED, insert);
     }
 
     /**

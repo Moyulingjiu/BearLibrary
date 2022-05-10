@@ -48,11 +48,14 @@ public class CheckDao {
         return i;
     }
 
-    public int insert(Check check) {
+    public long insert(Check check) {
         CheckPo checkPo = Common.cloneObject(check, CheckPo.class);
         int insert = checkPoMapper.insert(checkPo);
+        if (insert == 0 || checkPo.getId() == null) {
+            return 0L;
+        }
         redisUtils.deleteKey(RedisPrefix.CHECK + checkPo.getId());
-        return insert;
+        return checkPo.getId();
     }
 
     public Page<Check> selectAll(Integer page, Integer pageSize, Long userId, Long adminId, Byte status, Integer type, String userComment, String adminComment, Long minPoint, Long maxPoint, Long minExp, Long maxExp, LocalDateTime beginTime, LocalDateTime endTime) {

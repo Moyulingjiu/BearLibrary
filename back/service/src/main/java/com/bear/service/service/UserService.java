@@ -109,10 +109,10 @@ public class UserService {
         user.setInvitationCodeId(invitationCode.getId());
         user.setCreate(invitationCode.getCreate());
         user.setModified(invitationCode.getCreate());
-        int insert = userDao.insert(user);
+        long insert = userDao.insert(user);
         if (insert == 0) {
             redisUtils.unlock(RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(), lockToken);
-            return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
+            return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR, insert);
         }
 
         // 修改邀请码的使用者
