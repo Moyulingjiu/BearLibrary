@@ -31,8 +31,10 @@ CREATE TABLE `administrator` (
   `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
   `modified_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `gmt_create` (`gmt_create`,`gmt_modified`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 /*Table structure for table `check_record` */
 
@@ -55,7 +57,10 @@ CREATE TABLE `check_record` (
   `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
   `modified_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `administrator_id` (`administrator_id`),
+  KEY `gmt_create` (`gmt_create`,`gmt_modified`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 /*Table structure for table `contribution` */
@@ -74,7 +79,10 @@ CREATE TABLE `contribution` (
   `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
   `modified_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `administrator_id` (`administrator_id`),
+  KEY `user_id` (`user_id`),
+  KEY `gmt_create` (`gmt_create`,`gmt_modified`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 /*Table structure for table `invitation_code` */
@@ -93,7 +101,11 @@ CREATE TABLE `invitation_code` (
   `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
   `modified_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `code` (`code`),
+  KEY `administrator_id` (`administrator_id`),
+  KEY `user_id` (`user_id`),
+  KEY `gmt_create` (`gmt_create`,`gmt_modified`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 /*Table structure for table `message` */
@@ -138,6 +150,7 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
   `id` bigint NOT NULL AUTO_INCREMENT,
+  `open_id` varchar(200) DEFAULT NULL,
   `name` varchar(50) NOT NULL,
   `password` varchar(500) NOT NULL,
   `invitation_code_id` bigint DEFAULT NULL,
@@ -161,7 +174,10 @@ CREATE TABLE `user` (
   `create_name` varchar(50) DEFAULT NULL,
   `modified_id` bigint DEFAULT NULL,
   `modified_name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `open_id` (`open_id`),
+  KEY `gmt_create` (`gmt_create`,`gmt_modified`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
