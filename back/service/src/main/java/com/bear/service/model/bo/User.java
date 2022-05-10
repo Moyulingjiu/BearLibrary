@@ -27,6 +27,11 @@ public class User implements Serializable {
     private Long id;
 
     /**
+     * 微信id，用于微信登陆
+     */
+    private String openId;
+
+    /**
      * 用户名（登陆用）
      */
     private String name;

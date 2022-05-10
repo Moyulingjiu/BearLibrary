@@ -45,6 +45,13 @@ public class UserController {
         return userService.login(userLoginVo);
     }
 
+    @PostMapping("/wxlogin")
+    public Object wxLogin(
+    ) {
+        // todo: 微信登陆
+        return "（接口暂未实现）";
+    }
+
     @GetMapping("/user/self")
     @UserLoginCheck
     public Object getSelf(
