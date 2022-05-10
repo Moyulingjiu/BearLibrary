@@ -9,9 +9,8 @@ import com.bear.service.model.bo.User;
 import com.bear.service.model.vo.receive.ContributionCommentVo;
 import com.bear.service.model.vo.receive.ContributionVo;
 import com.bear.service.model.vo.ret.ContributionRetVo;
-import com.bear.util.Common;
-import com.bear.util.ResponseUtil;
-import com.bear.util.ReturnNo;
+import com.bear.service.util.RedisUtils;
+import com.bear.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +31,8 @@ public class ContributionService {
     private ContributionDao contributionDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private RedisUtils redisUtils;
 
     /**
      * 添加贡献记录（贡献记录需要审核后才会发放积分，发放积分后不可以撤回）
@@ -101,6 +102,10 @@ public class ContributionService {
         if (user == null) {
             return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
         }
+        String lock = redisUtils.lock(RedisPrefix.USER_LOCK + user.getId(), DurationTimeUtil.MINUTE, DurationTimeUtil.FIVE_SECOND);
+        if (lock == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.TIME_OUT);
+        }
         if (contribution.getAdministratorId() != null) {
             return ResponseUtil.decorateReturnObject(ReturnNo.ALREADY_CHECKED_CONTRIBUTION);
         }
@@ -116,6 +121,7 @@ public class ContributionService {
         if (updateUser <= 0) {
             throw new RuntimeException("更新用户积分失败");
         }
+        redisUtils.unlock(RedisPrefix.USER_LOCK + user.getId(), lock);
         return ResponseUtil.success();
     }
 

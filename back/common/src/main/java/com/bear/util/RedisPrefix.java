@@ -50,4 +50,19 @@ public class RedisPrefix {
      * 打卡
      */
     public static final String CHECK = "check";
+
+    /**
+     * 锁住用户
+     */
+    public static final String USER_LOCK = "user_lock_";
+
+    /**
+     * 锁住打卡
+     */
+    public static final String CHECK_LOCK = "check_lock_";
+
+    /**
+     * 锁住贡献
+     */
+    public static final String CONTRIBUTION_LOCK = "contribution_lock_";
 }

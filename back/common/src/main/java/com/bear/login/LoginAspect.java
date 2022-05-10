@@ -99,8 +99,8 @@ public class LoginAspect {
             if (issuedAt.after(new Date()) || expiresAt.before(new Date())) {
                 return ResponseUtil.badToken();
             }
-            // 如果有效期不足一个小时（返回新的token给前端）
-            if (System.currentTimeMillis() + DurationTimeUtil.HOUR > expiresAt.getTime()) {
+            // 如果有效期不足十分钟（返回新的token给前端）
+            if (System.currentTimeMillis() + JwtIssuer.WILL_EXPIRE_TIME > expiresAt.getTime()) {
                 String newToken = JwtIssuer.getToken(userId, userName, tokenType);
                 return ResponseUtil.decorateReturnObject(ReturnNo.NEED_CHANGE_TOKEN, newToken);
             }

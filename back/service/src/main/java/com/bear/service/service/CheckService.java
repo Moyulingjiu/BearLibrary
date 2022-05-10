@@ -11,9 +11,8 @@ import com.bear.service.model.bo.User;
 import com.bear.service.model.vo.receive.CheckAdminVo;
 import com.bear.service.model.vo.receive.CheckVo;
 import com.bear.service.model.vo.ret.CheckRetVo;
-import com.bear.util.Common;
-import com.bear.util.ResponseUtil;
-import com.bear.util.ReturnNo;
+import com.bear.service.util.RedisUtils;
+import com.bear.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +32,8 @@ public class CheckService {
     private CheckDao checkDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private RedisUtils redisUtils;
 
     /**
      * 创建打卡
@@ -144,6 +145,14 @@ public class CheckService {
         if (check.getStatus() != CheckStatus.WAITING) {
             return ResponseUtil.decorateReturnObject(ReturnNo.ALREADY_CHECKED_PUNCH);
         }
+        User user = userDao.selectById(check.getUserId());
+        if (user == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        String lock = redisUtils.lock(RedisPrefix.USER_LOCK + user.getId(), DurationTimeUtil.MINUTE, DurationTimeUtil.FIVE_SECOND);
+        if (lock == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.TIME_OUT);
+        }
         Common.modifyObject(check, adminId, adminName);
         check.setAdminComment(checkAdminVo.getComment());
         check.setExp(checkAdminVo.getExp());
@@ -157,10 +166,6 @@ public class CheckService {
         int update = checkDao.update(check);
         if (update > 0) {
             if (check.getStatus() == CheckStatus.PASS) {
-                User user = userDao.selectById(check.getUserId());
-                if (user == null) {
-                    throw new RuntimeException("无法更新经验值与积分");
-                }
                 switch (check.getType()) {
                     case WALK:
                         user.setHonorPoint(user.getHonorPoint() + check.getPoint());
@@ -191,6 +196,7 @@ public class CheckService {
                 if (i <= 0) {
                     throw new RuntimeException("无法更新经验值与积分");
                 }
+                redisUtils.unlock(RedisPrefix.USER_LOCK + user.getId(), lock);
             }
         } else {
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);

@@ -264,6 +264,10 @@ public class UserService {
         if (user == null || user.getValid() == 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
         }
+        String lock = redisUtils.lock(RedisPrefix.USER_LOCK + user.getId(), DurationTimeUtil.MINUTE, DurationTimeUtil.FIVE_SECOND);
+        if (lock == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.TIME_OUT);
+        }
         String password = Aes.decrypt(user.getPassword(), Common.getPasswordSecret());
         if (!passwordChangeVo.getOldPassword().equals(password)) {
             return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_USER_NAME);
@@ -280,6 +284,7 @@ public class UserService {
         if (update <= 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
+        redisUtils.unlock(RedisPrefix.USER_LOCK + user.getId(), lock);
         return ResponseUtil.success();
     }
 
@@ -298,6 +303,10 @@ public class UserService {
         if (user == null || user.getValid() == 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
         }
+        String lock = redisUtils.lock(RedisPrefix.USER_LOCK + user.getId(), DurationTimeUtil.MINUTE, DurationTimeUtil.FIVE_SECOND);
+        if (lock == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.TIME_OUT);
+        }
         if (!StringUtils.validPassword(passwordResetVo.getPassword())) {
             return ResponseUtil.decorateReturnObject(ReturnNo.ILLEGAL_PASSWORD_FORMAT);
         }
@@ -307,6 +316,7 @@ public class UserService {
         if (update <= 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
+        redisUtils.unlock(RedisPrefix.USER_LOCK + user.getId(), lock);
         return ResponseUtil.success();
     }
 
@@ -323,6 +333,10 @@ public class UserService {
         User user = userDao.selectById(id);
         if (user == null || user.getValid() == 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        String lock = redisUtils.lock(RedisPrefix.USER_LOCK + user.getId(), DurationTimeUtil.MINUTE, DurationTimeUtil.FIVE_SECOND);
+        if (lock == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.TIME_OUT);
         }
         Common.modifyObject(user, id, name);
         if (userVo.getNickname() != null) {
@@ -348,6 +362,7 @@ public class UserService {
         if (update <= 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
+        redisUtils.unlock(RedisPrefix.USER_LOCK + user.getId(), lock);
         return ResponseUtil.success();
     }
 
@@ -365,6 +380,10 @@ public class UserService {
         User user = userDao.selectById(id);
         if (user == null || user.getValid() == 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.RESOURCE_NOT_EXIST);
+        }
+        String lock = redisUtils.lock(RedisPrefix.USER_LOCK + user.getId(), DurationTimeUtil.MINUTE, DurationTimeUtil.FIVE_SECOND);
+        if (lock == null) {
+            return ResponseUtil.decorateReturnObject(ReturnNo.TIME_OUT);
         }
         Common.modifyObject(user, adminId, adminName);
         if (userAdminVo.getNickname() != null) {
@@ -414,6 +433,7 @@ public class UserService {
         if (update <= 0) {
             return ResponseUtil.decorateReturnObject(ReturnNo.INTERNAL_SERVER_ERR);
         }
+        redisUtils.unlock(RedisPrefix.USER_LOCK + user.getId(), lock);
         return ResponseUtil.success();
     }
 

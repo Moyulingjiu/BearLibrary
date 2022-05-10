@@ -17,6 +17,11 @@ public class DurationTimeUtil {
     public static final long SECOND = 1000 * MILLISECOND;
 
     /**
+     * 五秒
+     */
+    public static final long FIVE_SECOND = 5 * SECOND;
+
+    /**
      * 半分钟
      */
     public static final long HALF_MINUTE = 30 * SECOND;
@@ -35,6 +40,11 @@ public class DurationTimeUtil {
      * 小时
      */
     public static final long HOUR = 60 * MINUTE;
+
+    /**
+     * 两个小时
+     */
+    public static final long TWO_HOUR = 2 * HOUR;
 
     /**
      * 天

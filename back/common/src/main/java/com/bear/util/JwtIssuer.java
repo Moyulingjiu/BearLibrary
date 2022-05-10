@@ -10,6 +10,15 @@ import java.util.UUID;
 
 public class JwtIssuer {
     /**
+     * token过期时间
+     */
+    private static final Long EXPIRE_TIME = DurationTimeUtil.TWO_HOUR;
+    /**
+     * 即将过期时间
+     */
+    public static final Long WILL_EXPIRE_TIME = DurationTimeUtil.TEN_MINUTE;
+
+    /**
      * 签发token
      *
      * @param id 用户id
@@ -20,7 +29,7 @@ public class JwtIssuer {
     public static String getToken(@NotNull Long id, @NotNull String name, @NotNull TokenType type) {
         return JWT.create()
                 // 过期时间
-                .withExpiresAt(new Date(System.currentTimeMillis() + DurationTimeUtil.DAY))
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRE_TIME))
                 // 签发时间
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 // 接收人
