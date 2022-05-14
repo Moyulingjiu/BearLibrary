@@ -91,7 +91,7 @@ public class UserDao {
     public long insert(User user) {
         UserPo userPo = Common.cloneObject(user, UserPo.class);
         int insert = userPoMapper.insert(userPo);
-        if (insert == 0 || user.getId() == null) {
+        if (insert == 0 || userPo.getId() == null) {
             return 0L;
         }
         // 插入的时候要把null给删了，不然查缓存还是null。

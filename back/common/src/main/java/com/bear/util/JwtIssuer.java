@@ -8,6 +8,12 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * JWT 签发类
+ *
+ * @author moyulingjiu
+ * create 2022年5月11日
+ */
 public class JwtIssuer {
     /**
      * token过期时间
@@ -21,7 +27,7 @@ public class JwtIssuer {
     /**
      * 签发token
      *
-     * @param id 用户id
+     * @param id   用户id
      * @param name 用户名
      * @param type token类型
      * @return 返回值

@@ -119,7 +119,10 @@ public class UserService {
         User userInsert = getByName(user.getName());
         invitationCode.setUserId(userInsert.getId());
         Common.modifyObject(invitationCode, userInsert.getId(), userInsert.getName());
-        invitationCodeDao.updateById(invitationCode);
+        int update = invitationCodeDao.updateById(invitationCode);
+        if (update == 0) {
+            throw new RuntimeException("连接数据库失败");
+        }
 
         // 解锁邀请码
         redisUtils.unlock(RedisPrefix.REGISTER_TOKEN_COVER + userRegisterVo.getCode(), lockToken);
