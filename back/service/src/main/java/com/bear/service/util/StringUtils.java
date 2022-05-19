@@ -34,7 +34,6 @@ public class StringUtils {
      * @return 是否合法
      */
     public static boolean validUserName(String name) {
-        String[] s = name.split(" ");
         String regex = "^[a-zA-Z][a-zA-z\\d]{3,9}$";
         return name.matches(regex);
     }
