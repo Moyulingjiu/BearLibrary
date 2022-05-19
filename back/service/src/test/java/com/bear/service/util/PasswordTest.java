@@ -1,4 +1,4 @@
-package com.bear.service;
+package com.bear.service.util;
 
 import com.bear.service.util.StringUtils;
 import org.junit.jupiter.api.Test;

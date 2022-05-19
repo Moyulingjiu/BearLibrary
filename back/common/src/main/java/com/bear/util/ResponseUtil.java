@@ -45,7 +45,7 @@ public class ResponseUtil {
      * @return map
      */
     public static Object decorateReturnObject(ReturnObject<?> returnObject) {
-        Map<String, Object> obj = new HashMap<>(3);
+        Map<String, Object> obj = new HashMap<>(4);
         obj.put(CODE, returnObject.getCode().getCode());
         obj.put(MESSAGE, returnObject.getMessage());
         obj.put(DATA, returnObject.getData());

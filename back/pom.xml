@@ -127,6 +127,13 @@
             <artifactId>java-jwt</artifactId>
             <version>3.19.1</version>
         </dependency>
+
+        <!-- jacoco -->
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.8</version>
+        </dependency>
     </dependencies>
 
     <build>
