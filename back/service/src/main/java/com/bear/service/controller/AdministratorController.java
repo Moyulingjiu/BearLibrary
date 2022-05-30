@@ -11,7 +11,6 @@ import com.bear.service.service.AdministratorService;
 import com.bear.util.Common;
 import com.bear.util.ResponseUtil;
 import com.bear.util.ReturnNo;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;

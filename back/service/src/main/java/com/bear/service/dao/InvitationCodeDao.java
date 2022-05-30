@@ -2,7 +2,6 @@ package com.bear.service.dao;
 
 import com.bear.service.mapper.InvitationCodePoMapper;
 import com.bear.service.model.bo.InvitationCode;
-import com.bear.service.model.bo.User;
 import com.bear.service.model.po.InvitationCodePo;
 import com.bear.service.model.po.InvitationCodePoExample;
 import com.bear.service.util.RedisUtils;
@@ -54,7 +53,16 @@ public class InvitationCodeDao {
             redisUtils.putObj(RedisPrefix.INVITATION_CODE + code, null);
             return null;
         }
-        InvitationCode invitationCode = Common.cloneObject(invitationCodePos.get(0), InvitationCode.class);
+        InvitationCode invitationCode = null;
+        for (InvitationCodePo invitationCodePo : invitationCodePos) {
+            if (invitationCodePo.getCode().equals(code)) {
+                invitationCode = Common.cloneObject(invitationCodePo, InvitationCode.class);
+            }
+        }
+        if (invitationCode == null) {
+            redisUtils.putObj(RedisPrefix.INVITATION_CODE + code, null);
+            return null;
+        }
         redisUtils.putObj(RedisPrefix.INVITATION_CODE + code, invitationCode);
         return invitationCode;
     }

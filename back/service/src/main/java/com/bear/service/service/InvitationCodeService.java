@@ -8,7 +8,6 @@ import com.bear.service.util.StringUtils;
 import com.bear.util.Common;
 import com.bear.util.ResponseUtil;
 import com.bear.util.ReturnNo;
-import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

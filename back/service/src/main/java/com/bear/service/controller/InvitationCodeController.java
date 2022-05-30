@@ -4,7 +4,6 @@ import com.bear.login.AdminLoginCheck;
 import com.bear.login.LoginId;
 import com.bear.login.LoginName;
 import com.bear.service.model.vo.receive.InvitationCodeVo;
-import com.bear.service.service.AdministratorService;
 import com.bear.service.service.InvitationCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
