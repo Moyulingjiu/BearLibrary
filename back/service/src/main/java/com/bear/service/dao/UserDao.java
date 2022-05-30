@@ -64,9 +64,19 @@ public class UserDao {
             redisUtils.putObj(RedisPrefix.USER + name, null);
             return null;
         }
+        // 防止用户使用的是大小写不敏感的MySQL
+        User user = null;
+        for (UserPo userPo : userPos) {
+            if (userPo.getName().equals(name)) {
+                user = Common.cloneObject(userPo, User.class);
+            }
+        }
+        if (user == null) {
+            redisUtils.putObj(RedisPrefix.USER + name, null);
+            return null;
+        }
         // 写入redis
         redisUtils.put(RedisPrefix.USER_NAME_EXIST + name, "1");
-        User user = Common.cloneObject(userPos.get(0), User.class);
         redisUtils.putObj(RedisPrefix.USER + name, user);
         return user;
     }

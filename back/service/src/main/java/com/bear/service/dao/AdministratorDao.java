@@ -64,8 +64,17 @@ public class AdministratorDao {
             redisUtils.putObj(RedisPrefix.ADMIN + name, null);
             return null;
         }
+        Administrator administrator = null;
+        for (AdministratorPo administratorPo : administratorPos) {
+            if (administratorPo.getName().equals(name)) {
+                administrator = Common.cloneObject(administratorPo, Administrator.class);
+            }
+        }
+        if (administrator == null) {
+            redisUtils.putObj(RedisPrefix.ADMIN + name, null);
+            return null;
+        }
         redisUtils.put(RedisPrefix.ADMIN_NAME_EXIST + name, "1");
-        Administrator administrator = Common.cloneObject(administratorPos.get(0), Administrator.class);
         redisUtils.putObj(RedisPrefix.ADMIN + name, administrator);
         return administrator;
     }
