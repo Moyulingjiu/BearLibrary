@@ -44,22 +44,34 @@ class ServiceApplicationTests {
 
     @Test
     public void testAll() {
+        long start = System.currentTimeMillis();
         adminLoginTest();
         adminLoginTest2();
+        long end = System.currentTimeMillis();
+        System.out.println("管理员登陆平均时间 " + (end - start) / 2 + "ms");
+        start = System.currentTimeMillis();
         invitationCodeTest1();
         invitationCodeTest2();
         invitationCodeTest3();
         invitationCodeTest4();
         invitationCodeTest5();
+        end = System.currentTimeMillis();
+        System.out.println("邀请码创建平均时间 " + (end - start) / 5 + "ms");
+        start = System.currentTimeMillis();
         registerTest();
         registerTest2();
         registerTest3();
         registerTest4();
         registerTest5();
         registerTest6();
+        end = System.currentTimeMillis();
+        System.out.println("用户注册平均时间 " + (end - start) / 6 + "ms");
+        start = System.currentTimeMillis();
         loginTest1();
         loginTest2();
         loginTest3();
+        end = System.currentTimeMillis();
+        System.out.println("用户登录平均时间 " + (end - start) / 3 + "ms");
     }
 
     /**
