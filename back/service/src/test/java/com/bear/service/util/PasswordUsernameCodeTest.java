@@ -1,9 +1,8 @@
 package com.bear.service.util;
 
-import com.bear.service.util.StringUtils;
 import org.junit.jupiter.api.Test;
 
-public class PasswordTest {
+public class PasswordUsernameCodeTest {
     @Test
     public void test1() {
         String password = "123456";
